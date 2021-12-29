@@ -1,0 +1,2954 @@
+{
+	"info": {
+		"_postman_id": "6a8128fa-17f6-4624-b126-b5a9d1ac3915",
+		"name": "Lockstep Platform API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "ROPC Authentication Copy",
+			"item": [
+				{
+					"name": "ROPC Auth Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json()\r",
+									"let token = response.id_token \r",
+									"console.log(token)\r",
+									"pm.environment.set(\"Token\", token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "openid {{clientId}} offline_access",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{clientId}}",
+									"type": "text"
+								},
+								{
+									"key": "response_type",
+									"value": "token id_token",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://login.{{baseURL}}.lockstep.io/login.{{baseURL}}.lockstep.io/B2C_1A_ROPC_Auth/oauth2/v2.0/token",
+							"protocol": "https",
+							"host": [
+								"login",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"login.{{baseURL}}.lockstep.io",
+								"B2C_1A_ROPC_Auth",
+								"oauth2",
+								"v2.0",
+								"token"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"disabled": true
+								},
+								{
+									"key": "scope",
+									"value": "openid f5ec2f3d-f265-449c-824c-1052b8bb0930 offline_access",
+									"disabled": true
+								},
+								{
+									"key": "client_id",
+									"value": "f5ec2f3d-f265-449c-824c-1052b8bb0930",
+									"disabled": true
+								},
+								{
+									"key": "resource_type",
+									"value": "token id_token",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ROPC Auth Diff Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json()\r",
+									"let token = response.id_token \r",
+									"console.log(token)\r",
+									"pm.environment.set(\"diffToken\", token);\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "",
+									"type": "text"
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "openid {{clientId}} offline_access",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "{{clientId}}",
+									"type": "text"
+								},
+								{
+									"key": "response_type",
+									"value": "token id_token",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://login.{{baseURL}}.lockstep.io/login.{{baseURL}}.lockstep.io/B2C_1A_ROPC_Auth/oauth2/v2.0/token",
+							"protocol": "https",
+							"host": [
+								"login",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"login.{{baseURL}}.lockstep.io",
+								"B2C_1A_ROPC_Auth",
+								"oauth2",
+								"v2.0",
+								"token"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "password",
+									"value": "",
+									"disabled": true
+								},
+								{
+									"key": "grant_type",
+									"value": "password",
+									"disabled": true
+								},
+								{
+									"key": "scope",
+									"value": "openid f5ec2f3d-f265-449c-824c-1052b8bb0930 offline_access",
+									"disabled": true
+								},
+								{
+									"key": "client_id",
+									"value": "f5ec2f3d-f265-449c-824c-1052b8bb0930",
+									"disabled": true
+								},
+								{
+									"key": "resource_type",
+									"value": "token id_token",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "General",
+			"item": [
+				{
+					"name": "Status",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									"pm.test(\"Expected User Name\"), () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.documentCode).to.eql(\"Andy Cabandong\")\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Status",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Status Non Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(700);\r",
+									"});\r",
+									"pm.test(\"Logged in = False\"), () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.documentCode).to.eql(\"true\")\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "api.{{baseURL}}.lockstep.io/api/v1/Status",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Clear Cache",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"Cache was cleared\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/status/cache",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"status",
+								"cache"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Attachments",
+			"item": [
+				{
+					"name": "Attachments Query",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Attachments/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Attachments",
+								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notes",
+			"item": [
+				{
+					"name": "Notes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json()\r",
+									"let id = response[0].noteId\r",
+									"pm.collectionVariables.set(\"noteId\", id);\r",
+									"console.log(id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"tableKey\": \"invoice\",\r\n    \"objectKey\": \"8943be33-1641-4ab9-a5da-542b89f5934f\",\r\n    \"noteText\": \"Test123\",\r\n    \"noteType\": \"string\",\r\n    \"isArchived\": false\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Notes",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Notes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Notes ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"tableKey\": \"string\",\r\n    \"objectKey\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"noteText\": \"Test123\",\r\n    \"noteType\": \"string\",\r\n    \"isArchived\": true\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api​/v1​/Notes​/{{noteId}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api​",
+								"v1​",
+								"Notes​",
+								"{{noteId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Notes Query",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"tableKey\": \"string\",\r\n    \"objectKey\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"noteText\": \"Test123\",\r\n    \"noteType\": \"string\",\r\n    \"isArchived\": true\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Notes/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Notes",
+								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Payments",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\r\n        \"companyId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n        \"erpKey\": \"string\",\r\n        \"paymentType\": \"payment\",\r\n        \"tenderType\": \"cash\",\r\n        \"isOpen\": true,\r\n        \"inDispute\": true,\r\n        \"memoText\": \"string\",\r\n        \"paymentDate\": \"2021-06-24\",\r\n        \"postDate\": \"2021-06-24\",\r\n        \"paymentAmount\": 100.00,\r\n        \"unappliedAmount\": 10000.00,\r\n        \"currencyCode\": \"USD\"\r\n    },\r\n    {\r\n        \"companyId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n        \"erpKey\": \"string\",\r\n        \"paymentType\": \"payment\",\r\n        \"tenderType\": \"Cash\",\r\n        \"isOpen\": true,\r\n        \"inDispute\": true,\r\n        \"memoText\": \"string\",\r\n        \"paymentDate\": \"2021-06-24\",\r\n        \"postDate\": \"2021-06-24\",\r\n        \"paymentAmount\": 500.00,\r\n        \"unappliedAmount\": 1000000.00,\r\n        \"currencyCode\": \"EUR\"\r\n    }\r\n    \r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Payments",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Payments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Payments/2c296dce-0b07-4bab-a551-3ae4aec713f8",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Payments",
+								"2c296dce-0b07-4bab-a551-3ae4aec713f8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Applications ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/PaymentApplications/4a944f83-46f3-4d7b-9a5d-c674e4632fdb",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"PaymentApplications",
+								"4a944f83-46f3-4d7b-9a5d-c674e4632fdb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Payment Applications Query",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/PaymentApplications/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"PaymentApplications",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PaymentApplications",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"invoiceId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"paymentId\": \"3135a660-f890-4fee-8e18-12d0f6211e92\",\r\n    \"erpKey\": \"string\",\r\n    \"entryNumber\": 0,\r\n    \"applyToInvoiceDate\": \"2021-06-30T16:51:13.940Z\",\r\n    \"paymentAppliedAmount\": 500.00\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/PaymentApplications",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"PaymentApplications"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Companies",
+			"item": [
+				{
+					"name": "Companies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json()\r",
+									"let records = response.records\r",
+									"let id  = records[0].companyId\r",
+									"pm.collectionVariables.set(\"companyId\", id);\r",
+									"console.log(id)"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/V1/companies/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"V1",
+								"companies",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Company ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/V1/companies/{{companyId}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"V1",
+								"companies",
+								"{{companyId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contacts",
+			"item": [
+				{
+					"name": "Contact ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/V1/contacts/6151cbf3-349c-44cb-be02-39c08c2c4089",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"V1",
+								"contacts",
+								"6151cbf3-349c-44cb-be02-39c08c2c4089"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Contact Query",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/V1/contacts/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"V1",
+								"contacts",
+								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Countries",
+			"item": [
+				{
+					"name": "Countries",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/countries",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"countries"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Country",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/countries?countryName=AFGHANISTAN",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"countries"
+							],
+							"query": [
+								{
+									"key": "countryName",
+									"value": "AFGHANISTAN"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Country Test",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://lockstep-app-store-api-devqa.azurewebsites.net/api/v1/Countries/getOne?countryName=",
+							"protocol": "https",
+							"host": [
+								"lockstep-app-store-api-devqa",
+								"azurewebsites",
+								"net"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Countries",
+								"getOne"
+							],
+							"query": [
+								{
+									"key": "countryName",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Currency",
+			"item": [
+				{
+					"name": "Currencies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"     pm.expect(pm.response.text()).to.include(\"alphaCode\"),\r",
+									"      pm.expect(pm.response.text()).to.include(\"numericCode\"),\r",
+									"       pm.expect(pm.response.text()).to.include(\"currencyName\"),\r",
+									"        pm.expect(pm.response.text()).to.include(\"minorUnit\"),\r",
+									"        pm.expect(pm.response.text()).to.include(\"symbol\")\r",
+									"});\r",
+									"const schema = {\r",
+									"  \"sourceCurrency\": {\r",
+									"    \"destinationCurrency\": {\r",
+									"      \"currencyRate\": {\r",
+									"        \"type\": \"string\"\r",
+									"      }\r",
+									"    }\r",
+									"  }\r",
+									"};\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/currencies",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"currencies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Currencies Non Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"     pm.expect(pm.response.text()).to.include(\"alphaCode\"),\r",
+									"      pm.expect(pm.response.text()).to.include(\"numericCode\"),\r",
+									"       pm.expect(pm.response.text()).to.include(\"currencyName\"),\r",
+									"        pm.expect(pm.response.text()).to.include(\"minorUnit\"),\r",
+									"          pm.expect(pm.response.text()).to.include(\"symbol\")\r",
+									"});\r",
+									"const schema = {\r",
+									"  \"sourceCurrency\": {\r",
+									"    \"destinationCurrency\": {\r",
+									"      \"currencyRate\": {\r",
+									"        \"type\": \"string\"\r",
+									"      }\r",
+									"    }\r",
+									"  }\r",
+									"};\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/currencies",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"currencies"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Currency Rates",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"const schema = {\r",
+									"  \"sourceCurrency\": {\r",
+									"    \"destinationCurrency\": {\r",
+									"      \"currencyRate\": {\r",
+									"        \"type\": \"string\"\r",
+									"      }\r",
+									"    }\r",
+									"  }\r",
+									"};\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/currencies/USD/JPY?date=2021-05-10",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"currencies",
+								"USD",
+								"JPY"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2021-05-10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Currency Rates USD/EUR/2021-05-20",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Currency Rate\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"0.82\"),\r",
+									"    pm.expect(pm.response.text()).to.include(\"2021-05-20\");\r",
+									"});\r",
+									"const schema = {\r",
+									"  \"sourceCurrency\": {\r",
+									"    \"destinationCurrency\": {\r",
+									"      \"currencyRate\": {\r",
+									"        \"type\": \"string\"\r",
+									"      }\r",
+									"    }\r",
+									"  }\r",
+									"};\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/currencies/USD/EUR?date=2021-05-20",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"currencies",
+								"USD",
+								"EUR"
+							],
+							"query": [
+								{
+									"key": "date",
+									"value": "2021-05-20"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Migrate",
+			"item": [
+				{
+					"name": "Migrated List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"migrations\");\r",
+									"});\r",
+									"\tconst schema = {\r",
+									"\t  \"groupKey\": {\r",
+									"\t    \"invoiceCount\": {\r",
+									"\t      \"lineCount\": {\r",
+									"\t        \"type\": \"string\"\r",
+									"\t      }\r",
+									"\t    }\r",
+									"\t  }\r",
+									"\t};\r",
+									"\tpm.test('Schema is valid', function() {\r",
+									"\t  pm.response.to.have.jsonSchema(schema);\r",
+									"\t});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/migration/list",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"migration",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Invoice Query",
+			"item": [
+				{
+					"name": "Invoice  Query",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var moment = require('moment');\r",
+									"\r",
+									"let m = moment()\r",
+									"let currentDate = m.format(\"YYYY-MM-DD\")\r",
+									"let endDate = m.subtract(120, \"days\")\r",
+									"pm.collectionVariables.set(\"start\", currentDate);\r",
+									"pm.collectionVariables.set(\"end\", endDate);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/invoices/query?filter= invoiceDate  between {{end}} and {{start}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoices",
+								"query"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": " invoiceDate  between {{end}} and {{start}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invoice  Query Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"records\");\r",
+									"});\r",
+									"\tconst schema = {\r",
+									"\t  \"groupKey\": {\r",
+									"\t    \"documentId\": {\r",
+									"\t      \"customerId\": {\r",
+									"\t        \"type\": \"string\"\r",
+									"\t      }\r",
+									"\t    }\r",
+									"\t  }\r",
+									"\t};\r",
+									"\tpm.test('Schema is valid', function() {\r",
+									"\t  pm.response.to.have.jsonSchema(schema);\r",
+									"\t});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Invoices/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Invoices",
+								"query"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "customerId='282c5bff-d489-43ae-b6d5-31ed093479da'",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invoice  Query History",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 2000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+									"});\r",
+									"\tconst schema = {\r",
+									"\t  \"groupKey\": {\r",
+									"\t    \"documentId\": {\r",
+									"\t      \"customerId\": {\r",
+									"\t        \"type\": \"string\"\r",
+									"\t      }\r",
+									"\t    }\r",
+									"\t  }\r",
+									"\t};\r",
+									"\tpm.test('Schema is valid', function() {\r",
+									"\t  pm.response.to.have.jsonSchema(schema);\r",
+									"\t});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/InvoiceHistory/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"InvoiceHistory",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Invoice Query 400 Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Invoices/qurydfgsa",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Invoices",
+								"qurydfgsa"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "invoice ID",
+			"item": [
+				{
+					"name": "Invoice ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"customerId\"),\r",
+									"    pm.expect(pm.response.text()).to.include(\"erpKey\")\r",
+									"});\r",
+									"const schema = {\r",
+									"  \"groupKey\": {\r",
+									"    \"documentId\": {\r",
+									"      \"customerId\": {\r",
+									"        \"type\": \"string\"\r",
+									"      }\r",
+									"    }\r",
+									"  }\r",
+									"};\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(schema);\r",
+									"});\r",
+									"pm.test(\"DocumentCode Match\"), () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.documentCode).to.eql(\"Test\")\r",
+									"}\r",
+									"pm.test(\"GroupKey Match\"), () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.groupKey).to.eql(\"86b9c3e9-2983-498b-a978-8602cad4f675\")\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/invoices/904a66d3-6da0-43ca-b661-0bd0366074fd",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoices",
+								"904a66d3-6da0-43ca-b661-0bd0366074fd"
+							]
+						},
+						"description": "Returns a document with a specific ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Invoice ID History",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"erpKey\"),\r",
+									"     pm.expect(pm.response.text()).to.include(\"records\"),\r",
+									"      pm.expect(pm.response.text()).to.include(\"totalCount\")\r",
+									"});\r",
+									"\r",
+									"const schema = {\r",
+									"  \"groupKey\": {\r",
+									"    \"documentId\": {\r",
+									"      \"type\": \"string\"\r",
+									"    }\r",
+									"  }\r",
+									"};\r",
+									"pm.test('Schema is valid', function() {\r",
+									"  pm.response.to.have.jsonSchema(schema);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/invoiceHistory/be4e4f37-c7ed-41ae-923d-283ba82fbb56",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoiceHistory",
+								"be4e4f37-c7ed-41ae-923d-283ba82fbb56"
+							]
+						},
+						"description": "Returns a document with a specific ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Invoice ID 400 Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Title Fail Response Exists\"), () => {\r",
+									"    const responseJson = pm.response.json();\r",
+									"    pm.expect(responseJson.title).to.eql(\"One or more validation errors occurred.\")\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/invoices/33bcc7e5",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoices",
+								"33bcc7e5"
+							]
+						},
+						"description": "Returns a document with a specific ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Invoice ID 405 Method Not Allowed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/invoices/",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"invoices",
+								""
+							]
+						},
+						"description": "Returns a document with a specific ID"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Application Query",
+			"item": [
+				{
+					"name": "Applications Query",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"appId\")\r",
+									"    pm.expect(pm.response.text()).to.include(\"name\")\r",
+									"    pm.expect(pm.response.text()).to.include(\"ownerId\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Applications/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Applications",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Applications Query 400 Bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    //pm.expect(pm.response.text()).to.include(\"type\")\r",
+									"    // pm.expect(pm.response.text()).to.include(\"title\")\r",
+									"    // pm.expect(pm.response.text()).to.include(\"traceId\")\r",
+									"    // pm.expect(pm.response.text()).to.include(\"errors\")\r",
+									"    // pm.expect(pm.response.text()).to.include(\"id\")\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Applications/quadf561a",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Applications",
+								"quadf561a"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Application ID",
+			"item": [
+				{
+					"name": "Application ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"pm.test(\"Body Matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.include(\"appId\")\r",
+									"    pm.expect(pm.response.text()).to.include(\"name\")\r",
+									"    pm.expect(pm.response.text()).to.include(\"description\");\r",
+									"});\r",
+									"pm.test(\"Content-Type is present\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Applications/02be7c0c-7927-4c61-8bd0-7c68e3eef281",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Applications",
+								"02be7c0c-7927-4c61-8bd0-7c68e3eef281"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Application ID 405 Method Not Allowed",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 405\", function () {\r",
+									"    pm.response.to.have.status(405);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 500ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(500);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Body matches string\", function () {\r",
+									"    pm.expect(pm.response.text()).to.not.include(\"appId\")\r",
+									"    pm.expect(pm.response.text()).to.not.include(\"name\")\r",
+									"    pm.expect(pm.response.text()).to.not.include(\"description\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Applications/",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Applications",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Application ID 400 bad Request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404\", function () {\r",
+									"    pm.response.to.have.status(404);\r",
+									"});\r",
+									"pm.test(\"Response time is less than 1000ms\", function () {\r",
+									"    pm.expect(pm.response.responseTime).to.be.below(1000);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Applications/7ee872ab-0",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Applications",
+								"7ee872ab-0"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Custom Field Values",
+			"item": [
+				{
+					"name": "CustomFieldValueQuery",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CustomFieldValues/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CustomFieldValues",
+								"query"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Custom Field Definitions",
+			"item": [
+				{
+					"name": "Post Custom Field Definition",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"tableKey\": \"Payment\",\r\n    \"appId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"customFieldLabel\": \"Custom Field 7\",\r\n    \"dataType\": \"string\",\r\n    \"sortOrder\": 0\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CustomFieldDefinitions",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CustomFieldDefinitions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Custom Field Definition",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"tableKey\": \"Custom Field 2\",\r\n    \"appId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"customFieldLabel\": \"Custom Field 8\",\r\n    \"dataType\": \"string\",\r\n    \"sortOrder\": 0\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CustomFieldDefinitions/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CustomFieldDefinitions",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Custom Field Definition",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"tableKey\": \"Custom Field 8\",\r\n    \"appId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"customFieldLabel\": \"Custom Field 8\",\r\n    \"dataType\": \"string\",\r\n    \"sortOrder\": 0\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CustomFieldDefinitions/24b91541-b2f1-4ef8-a24f-f7c440f5ec64",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CustomFieldDefinitions",
+								"24b91541-b2f1-4ef8-a24f-f7c440f5ec64"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer"
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Sync All",
+			"item": [
+				{
+					"name": "Sync All Categoies",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{Token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "File",
+									"type": "file",
+									"src": "csv.zip"
+								},
+								{
+									"key": "TestCsv",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Sync/zip",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Sync",
+								"zip"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Credit Memo Applied",
+			"item": [
+				{
+					"name": "Credit memo applied ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CreditMemoApplied/e8955ca4-24d4-47f3-a0df-b735a72bca3d",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CreditMemoApplied",
+								"e8955ca4-24d4-47f3-a0df-b735a72bca3d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Credit memo applied query",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CreditMemoApplied/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CreditMemoApplied",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post Credit Memo Applied",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"invoiceId\": \"4b3a18a7-76e8-4b97-ae85-070e212bad86\",\r\n    \"creditMemoInvoiceId\": \"25894e92-71ff-4c73-a00d-69f1b7e0c6e5\",\r\n    \"erpKey\": \"string\",\r\n    \"entryNumber\": 0,\r\n    \"applyToInvoiceDate\": \"2021-11-18T17:06:00.286Z\",\r\n    \"creditMemoAppliedAmount\": 717\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CreditMemoApplied",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CreditMemoApplied"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Credit Memo Applied",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"creditMemoAppliedAmount\": 314\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CreditMemoApplied/{{cmaID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CreditMemoApplied",
+								"{{cmaID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Credit Memo Applied",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CreditMemoApplied/{{cmaID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CreditMemoApplied",
+								"{{cmaID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Create and Delete Credit Memo",
+			"item": [
+				{
+					"name": "Post Credit Memo Applied",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json()\r",
+									"let id = response[0].creditMemoAppliedId\r",
+									"let gKey = response[0].groupKey\r",
+									"let amount = response[0].creditMemoAppliedAmount\r",
+									"\r",
+									"pm.collectionVariables.set(\"cmaID\", id);\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Credit Memo amount matches\", function () {\r",
+									"    amount == 717\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Group key matches\", function () {\r",
+									"    key = \"579c75ce-b6cf-4706-888d-b4e8b3e7a7c2\"\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n  {\r\n    \"invoiceId\": \"4b3a18a7-76e8-4b97-ae85-070e212bad86\",\r\n    \"creditMemoInvoiceId\": \"25894e92-71ff-4c73-a00d-69f1b7e0c6e5\",\r\n    \"erpKey\": \"string\",\r\n    \"entryNumber\": 0,\r\n    \"applyToInvoiceDate\": \"2021-11-18T17:06:00.286Z\",\r\n    \"creditMemoAppliedAmount\": 717\r\n  }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CreditMemoApplied",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CreditMemoApplied"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Credit Memo Applied",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json()\r",
+									"let id = pm.collectionVariables.get(\"cmaID\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Credit memo has updated amount\", function () {\r",
+									"    response.messages == \"Deleted credit memo application \" + id\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n{\r\n    \"creditMemoAppliedAmount\": 314\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CreditMemoApplied/{{cmaID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CreditMemoApplied",
+								"{{cmaID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Credit memo applied ID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json()\r",
+									"let amount = response.creditMemoAppliedAmount\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Credit Memo amount matches\", function () {\r",
+									"    amount == 314\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CreditMemoApplied/{{cmaID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CreditMemoApplied",
+								"{{cmaID}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Credit Memo Applied",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json()\r",
+									"let id = pm.collectionVariables.get(\"cmaID\");\r",
+									"\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response bodies matches deleted invoice\", function () {\r",
+									"    response.messages == \"Deleted credit memo application \" + id\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/CreditMemoApplied/{{cmaID}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"CreditMemoApplied",
+								"{{cmaID}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Provisioning",
+			"item": [
+				{
+					"name": "Provisioning",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{diffToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"fullName\": \"Byron\",\r\n  \"timeZone\": \"EST\",\r\n  \"defaultCurrency\": \"string\",\r\n  \"erp\": {\r\n    \"appId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"data\": {\r\n      \"authCode\": \"string\",\r\n      \"realmId\": \"string\",\r\n      \"redirectUri\": \"string\"\r\n    }\r\n  },\r\n  \"company\": {\r\n    \"companyName\": \"Captain Crunch Co\",\r\n    \"erpKey\": \"string\",\r\n    \"companyType\": \"string\",\r\n    \"companyStatus\": \"string\",\r\n    \"parentCompanyId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"enterpriseId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"isActive\": true,\r\n    \"defaultCurrencyCode\": \"str\",\r\n    \"companyLogoUrl\": \"string\",\r\n    \"primaryContactId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"address1\": \"string\",\r\n    \"address2\": \"string\",\r\n    \"address3\": \"string\",\r\n    \"city\": \"string\",\r\n    \"stateRegion\": \"string\",\r\n    \"postalCode\": \"string\",\r\n    \"country\": \"string\",\r\n    \"phoneNumber\": \"string\",\r\n    \"faxNumber\": \"string\",\r\n    \"taxId\": \"string\",\r\n    \"dunsNumber\": \"string\",\r\n    \"apEmailAddress\": \"user@example.com\",\r\n    \"arEmailAddress\": \"user@example.com\",\r\n    \"domainName\": \"string\",\r\n    \"companyClassificationCodeDefId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n    \"description\": \"string\",\r\n    \"website\": \"string\",\r\n    \"companyClassificationCodeDefinition\": {\r\n      \"codeType\": \"string\",\r\n      \"code\": \"string\",\r\n      \"codeDescription\": \"string\"\r\n    }\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/Provisioning",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"Provisioning"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Accounts",
+			"item": [
+				{
+					"name": "Get Users Query - ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/UserAccounts/580f0e97-95b2-42b4-b411-531a55a9ecef",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"UserAccounts",
+								"580f0e97-95b2-42b4-b411-531a55a9ecef"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users Query",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/UserAccounts/query",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"UserAccounts",
+								"query"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User - ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/UserAccounts/",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"UserAccounts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch User - ID",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"url": {
+							"raw": "https://api.{{baseURL}}.lockstep.io/api/v1/UserAccounts/",
+							"protocol": "https",
+							"host": [
+								"api",
+								"{{baseURL}}",
+								"lockstep",
+								"io"
+							],
+							"path": [
+								"api",
+								"v1",
+								"UserAccounts",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{diffToken}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "amount",
+			"value": ""
+		},
+		{
+			"key": "initialAgingJson",
+			"value": ""
+		},
+		{
+			"key": "date",
+			"value": "                                                  "
+		},
+		{
+			"key": "pageNumber",
+			"value": ""
+		},
+		{
+			"key": "amount30",
+			"value": ""
+		},
+		{
+			"key": "amount60",
+			"value": ""
+		},
+		{
+			"key": "amount90",
+			"value": ""
+		},
+		{
+			"key": "amount120",
+			"value": ""
+		},
+		{
+			"key": "syncID",
+			"value": ""
+		},
+		{
+			"key": "syncDate",
+			"value": ""
+		},
+		{
+			"key": "summaryCompany",
+			"value": ""
+		},
+		{
+			"key": "summaryAmount",
+			"value": ""
+		},
+		{
+			"key": "noteDate",
+			"value": ""
+		},
+		{
+			"key": "noteId",
+			"value": ""
+		},
+		{
+			"key": "month",
+			"value": ""
+		},
+		{
+			"key": "month1",
+			"value": ""
+		},
+		{
+			"key": "month2",
+			"value": ""
+		},
+		{
+			"key": "startDate",
+			"value": ""
+		},
+		{
+			"key": "count",
+			"value": ""
+		},
+		{
+			"key": "date11",
+			"value": ""
+		},
+		{
+			"key": "start",
+			"value": ""
+		},
+		{
+			"key": "end",
+			"value": ""
+		},
+		{
+			"key": "ar",
+			"value": ""
+		},
+		{
+			"key": "countedBack",
+			"value": ""
+		},
+		{
+			"key": "days",
+			"value": ""
+		},
+		{
+			"key": "timeFrame",
+			"value": ""
+		},
+		{
+			"key": "paymentAmount",
+			"value": ""
+		},
+		{
+			"key": "paymentCount",
+			"value": ""
+		},
+		{
+			"key": "invoiceAmount",
+			"value": ""
+		},
+		{
+			"key": "invoiceCount",
+			"value": ""
+		},
+		{
+			"key": "endDate",
+			"value": ""
+		},
+		{
+			"key": "rrResponse",
+			"value": ""
+		},
+		{
+			"key": "cmaID",
+			"value": ""
+		},
+		{
+			"key": "companyId",
+			"value": ""
+		}
+	]
+}
