@@ -28,13 +28,13 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
             while (true)
             {
                 var invoices = await client.Invoices.QueryInvoices("invoiceDate > 2021-12-01", null, "invoiceDate asc", 100, pageNumber);
-                if (!invoices.Success || invoices.Value.Records.Length == 0)
+                if (!invoices.Success || invoices.Value?.Records?.Length == 0)
                 {
                     break;
                 }
-                foreach (var invoice in invoices.Value.Records)
+                foreach (var invoice in invoices?.Value?.Records ?? Array.Empty<InvoiceModel>())
                 {
-                    Console.WriteLine($"Invoice {count++}: {invoice.InvoiceId}");
+                    Console.WriteLine($"Invoice {count++}: {invoice.InvoiceId} {invoice.}");
                 }
 
                 pageNumber++;
