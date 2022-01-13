@@ -1,0 +1,27 @@
+{
+  "name": "typescriptexample",
+  "version": "1.0.0",
+  "description": "Example code for Lockstep SDK for TypeScript/JavaScript",
+  "main": "index.js",
+  "dependencies": {
+    "lockstep-sdk": "^2021.39.691"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lockstep-Network/lockstep-sdk-examples.git"
+  },
+  "keywords": [
+    "lockstep",
+    "example"
+  ],
+  "author": "Lockstep Network",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Lockstep-Network/lockstep-sdk-examples/issues"
+  },
+  "homepage": "https://github.com/Lockstep-Network/lockstep-sdk-examples#readme"
+}
