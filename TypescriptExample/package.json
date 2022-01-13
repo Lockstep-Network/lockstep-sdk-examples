@@ -14,6 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/Lockstep-Network/lockstep-sdk-examples.git"
   },
+  "type": "module",
   "keywords": [
     "lockstep",
     "example"
