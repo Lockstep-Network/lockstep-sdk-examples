@@ -21,6 +21,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
             
             var result = await client.Status.Ping();
             Console.WriteLine("Ping result: " + JsonSerializer.Serialize(result));
+            Console.WriteLine();  // Space for readability.
 
             var pageNumber = 0;
             var count = 0;
@@ -48,6 +49,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
                 {
                     Console.WriteLine($"Invoice {count++}: {invoice.InvoiceId}");
                     Console.WriteLine($"Company Name: {invoice.Customer.CompanyName}");
+                    Console.WriteLine($"Outstanding Balance: {string.Format("{0:C}", invoice.OutstandingBalanceAmount)}");
                     Console.WriteLine(); // Space for readability.
                 }
 
