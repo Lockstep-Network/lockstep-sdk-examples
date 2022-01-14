@@ -352,3 +352,4 @@ src/CsharpExample/.idea/
 CsharpExample/.idea/
 JavaExample/target/classes/
 JavaExample/target/test-classes/
+TypescriptExample/.env
