@@ -1,6 +1,7 @@
 import { LockstepApi } from 'lockstep-sdk';
 
 console.log("Creating client");
+//Api-key
 var client = LockstepApi.withEnvironment("sbx").withApiKey("Api-key");
 console.log("About to call ping");
 
