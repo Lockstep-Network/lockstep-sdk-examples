@@ -38,14 +38,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var LockstepApi_1 = require("./node_modules/lockstep-sdk/src/LockstepApi");
 console.log("Creating client");
-//var clients=process.withEnvironment. 
-var client = LockstepApi_1.LockstepApi.withEnvironment("sbx").withApiKey("LSPK-plefvN72pvVPR+4r47MKyfef4U4hV5WzB4YMDRWnOOjuOSHsgX7Hvi1Q6rIp4lD+obF+HS+JsycqrjsZRF5Kqg==");
+var client = LockstepApi_1.LockstepApi.withEnvironment("sbx").withApiKey("Api-key");
 console.log("About to call ping");
 console.log("Started ping call");
 //function to fetch companyNames
 function company() {
     return __awaiter(this, void 0, void 0, function () {
-        var companies, error_1, pageNumbers, count, companies;
+        var companies, error_1, pageNumbers, companies;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -60,7 +59,6 @@ function company() {
                     return [3 /*break*/, 3];
                 case 3:
                     pageNumbers = 0;
-                    count = 0;
                     _a.label = 4;
                 case 4:
                     if (!(pageNumbers < 10)) return [3 /*break*/, 6];
