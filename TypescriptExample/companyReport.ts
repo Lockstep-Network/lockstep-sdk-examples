@@ -6,6 +6,18 @@ var client = LockstepApi.withEnvironment("sbx").withApiKey("Api-key");
 console.log("About to call ping");
 
 console.log("Started ping call");
+//writing to csv file
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+const csvWriter = createCsvWriter({
+    path: './companyData.csv',
+    header: [
+        {id: 'companyName', title: 'Company Name'},
+        {id: 'phone', title: 'Phone Number'},
+        {id: 'apEmail', title: 'apEmailAddress'},
+        {id: 'arEmail', title: 'arEmailAddress'}
+    ]
+});
+var records=[];
 
 //function to fetch companyNames
 async function company() 
@@ -27,13 +39,21 @@ async function company()
             break;
         }
 
-        companies.value.records.forEach(company => 
+        companies.value.records.forEach(async company => 
         {
-            console.log("company Name:", company.companyName);
-            console.log("company PhoneNumber:", company.phoneNumber);
-            console.log("company apEmailAddress:", company.apEmailAddress);
-            console.log("company arEmailAddress:", company.arEmailAddress);
+            var companyName=company.companyName;
+            var phone=company.phoneNumber;
+            var apEmail=company.apEmailAddress;
+            var arEmail=company.arEmailAddress;
+
+            console.log("company Name:", companyName);
+            console.log("company PhoneNumber:", phone);
+            console.log("company apEmailAddress:", apEmail);
+            console.log("company arEmailAddress:", arEmail);
             console.log(" ");
+
+            records.push({companyName: companyName,  phone:phone, apEmail:apEmail, arEmail:arEmail});
+            await csvWriter.writeRecords(records);
         });
 
         pageNumbers++;
