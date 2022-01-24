@@ -36,53 +36,48 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var LockstepApi_1 = require("./node_modules/lockstep-sdk/src/LockstepApi");
+var lockstep_sdk_1 = require("lockstep-sdk");
 console.log("Creating client");
-var client = LockstepApi_1.LockstepApi.withEnvironment("sbx").withApiKey("Api-key");
+var client = lockstep_sdk_1.LockstepApi.withEnvironment("sbx").withApiKey("Api-key");
 console.log("About to call ping");
 console.log("Started ping call");
 function invoice() {
     return __awaiter(this, void 0, void 0, function () {
-        var pageNumbers, count, invoices, error_1;
+        var invoices, error_1, pageNumbers, invoices;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
-                    pageNumbers = 0;
-                    count = 0;
-                    _a.label = 1;
+                    _a.trys.push([0, 2, , 3]);
+                    return [4 /*yield*/, client.Invoices.queryInvoices("invoiceDate > 2021-12-01", "Customer", "invoiceDate asc", 200, 0)];
                 case 1:
-                    if (!(pageNumbers < 10)) return [3 /*break*/, 3];
-                    return [4 /*yield*/, client.Invoices.queryInvoices("invoiceDate > 2021-12-01", "Customer", "invoiceDate asc", 100, pageNumbers)];
-                case 2:
                     invoices = _a.sent();
-                    if (!invoices.success || invoices.value.records.length == 0) {
-                        return [3 /*break*/, 3];
-                    }
-                    invoices.value.records.forEach(function (invoice) {
-                        console.log("invoiceId:", invoice.invoiceId);
-                        //console.log("company Name:", invoice.customer.companyName);//undefined
-                        console.log("outstanding Balance:", invoice.outstandingBalanceAmount);
-                    });
-                    pageNumbers++;
-                    return [3 /*break*/, 1];
-                case 3: return [3 /*break*/, 5];
-                case 4:
+                    return [3 /*break*/, 3];
+                case 2:
                     error_1 = _a.sent();
                     console.error(error_1);
-                    return [3 /*break*/, 5];
-                case 5: return [2 /*return*/];
+                    return [3 /*break*/, 3];
+                case 3:
+                    pageNumbers = 0;
+                    _a.label = 4;
+                case 4:
+                    if (!(pageNumbers < 10)) return [3 /*break*/, 6];
+                    return [4 /*yield*/, client.Invoices.queryInvoices("invoiceDate > 2021-12-01", "Customer", "invoiceDate asc", 200, pageNumbers)];
+                case 5:
+                    invoices = _a.sent();
+                    if (!invoices.success || invoices.value.records.length == 0) {
+                        return [3 /*break*/, 6];
+                    }
+                    invoices.value.records.forEach(function (invoice) {
+                        console.log("Invoice Id:", invoice.invoiceId);
+                        console.log("OutStanding Amount:", invoice.outstandingBalanceAmount);
+                        console.log("Customer Company Name:", invoice.company.companyName);
+                        console.log(" ");
+                    });
+                    pageNumbers++;
+                    return [3 /*break*/, 4];
+                case 6: return [2 /*return*/];
             }
         });
     });
 }
 invoice();
-// //var apiKey=process.
-// export function main()
-// {
-//     var client = LockstepApi.withEnvironment('prd');
-//     client.Status.ping().then(result => {
-//         console.log('Result: ' + JSON.stringify(result));
-//     })
-// }
-// main();

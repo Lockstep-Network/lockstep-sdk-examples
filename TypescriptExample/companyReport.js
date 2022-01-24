@@ -36,9 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-var LockstepApi_1 = require("./node_modules/lockstep-sdk/src/LockstepApi");
+var lockstep_sdk_1 = require("lockstep-sdk");
 console.log("Creating client");
-var client = LockstepApi_1.LockstepApi.withEnvironment("sbx").withApiKey("Api-key");
+var client = lockstep_sdk_1.LockstepApi.withEnvironment("sbx").withApiKey("Api-key");
 console.log("About to call ping");
 console.log("Started ping call");
 //function to fetch companyNames

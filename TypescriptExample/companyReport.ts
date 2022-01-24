@@ -1,4 +1,4 @@
-import { LockstepApi } from './node_modules/lockstep-sdk/src/LockstepApi';
+import { LockstepApi } from 'lockstep-sdk';
 
 console.log("Creating client");
 var client = LockstepApi.withEnvironment("sbx").withApiKey("Api-key");
