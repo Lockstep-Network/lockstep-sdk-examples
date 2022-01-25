@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LockstepSDK", "..\..\lockst
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyReport", "CompanyReport\CompanyReport.csproj", "{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionsReport", "CollectionsReport\CollectionsReport.csproj", "{D9C928D4-4570-4236-97AC-14989DE5EE6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9C928D4-4570-4236-97AC-14989DE5EE6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9C928D4-4570-4236-97AC-14989DE5EE6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9C928D4-4570-4236-97AC-14989DE5EE6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9C928D4-4570-4236-97AC-14989DE5EE6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
