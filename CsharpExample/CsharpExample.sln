@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsharpExample", "CsharpExam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LockstepSDK", "..\..\lockstep-sdk-csharp\src\LockstepSDK.csproj", "{387ABA39-6A8B-4D2F-8556-84652C4ABFDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyReport", "CompanyReport\CompanyReport.csproj", "{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{387ABA39-6A8B-4D2F-8556-84652C4ABFDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{387ABA39-6A8B-4D2F-8556-84652C4ABFDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{387ABA39-6A8B-4D2F-8556-84652C4ABFDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
