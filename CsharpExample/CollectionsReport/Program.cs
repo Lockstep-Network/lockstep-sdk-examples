@@ -30,7 +30,6 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
             Console.WriteLine();
 
             var pageNumber = 0;
-            var count = 0;
             
             List<Entry> entries = new();
             
@@ -44,7 +43,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
                     pageNumber
                 );
 
-                if (!invoices.Success || invoices.Value.Records.Length == 0)
+                if (invoices?.Value?.Records == null)
                 {
                     break;
                 }
@@ -56,7 +55,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
                         InvoiceId = invoice.InvoiceId,
                         InvoiceDate = invoice.InvoiceDate,
                         OutstandingBalance = invoice.OutstandingBalanceAmount,
-                        PrimaryContact = invoice.CustomerPrimaryContact.ContactName
+                        PrimaryContact = invoice.CustomerPrimaryContact?.ContactName
                     }));
                 }
                 

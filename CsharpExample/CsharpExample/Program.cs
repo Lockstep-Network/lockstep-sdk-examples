@@ -40,7 +40,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
                     pageNumber
                 );
 
-                if (!invoices.Success || invoices.Value.Records.Length == 0)
+                if (invoices?.Value?.Records == null)
                 {
                     break;
                 }
@@ -48,7 +48,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
                 foreach (var invoice in invoices.Value.Records)
                 {
                     Console.WriteLine($"Invoice {count++}: {invoice.InvoiceId}");
-                    Console.WriteLine($"Company Name: {invoice.Customer.CompanyName}");
+                    Console.WriteLine($"Company Name: {invoice.Customer?.CompanyName}");
                     Console.WriteLine($"Outstanding Balance: {string.Format("{0:C}", invoice.OutstandingBalanceAmount)}");
                     Console.WriteLine(); // Space for readability.
                 }
