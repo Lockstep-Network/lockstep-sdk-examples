@@ -1,5 +1,5 @@
 {
     "java.project.referencedLibraries": [
-        "lib/lockstep-sdk-java.jar"
-    ]
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic"
 }

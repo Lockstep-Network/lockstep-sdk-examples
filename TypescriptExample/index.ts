@@ -21,7 +21,7 @@ async function invoice() {
     while (pageNumbers<10) 
     {
         var invoices = await client.Invoices.queryInvoices("invoiceDate > 2021-12-01", "Customer", "invoiceDate asc", 200, pageNumbers);
-        if(!invoices.success || invoices.value.records.length == 0) 
+        if(!invoices.success || invoices?.value?.records == null) 
         {
             break;
         }
@@ -30,7 +30,7 @@ async function invoice() {
         {
             console.log("Invoice Id:", invoice.invoiceId);
             console.log("OutStanding Amount:", invoice.outstandingBalanceAmount);
-            console.log("Customer Company Name:", invoice.company.companyName);
+            console.log("Customer Company Name:", invoice?.company?.companyName);
             console.log(" ");
         });
 
