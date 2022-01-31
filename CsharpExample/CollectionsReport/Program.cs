@@ -8,9 +8,12 @@ using System.Threading.Tasks;
 using LockstepSDK;
 using CsvHelper;
 
+// I would like to see a sample program that shows how to query for invoices with an outstanding balance older than a certain age,
+// then fetch the primary contact person for that invoice, and export the list to CSV
+
 namespace LockstepExamples // Note: actual namespace depends on the project name.
 {
-    public class CompanyReport
+    public class CollectionsReport
     {
         public static async Task Main(string[] args)
         {
@@ -32,49 +35,41 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
             
             while (true)
             {
-                var companies = await client.Companies.QueryCompanies(
-                    null, 
-                    null, 
-                    null, 
+                var invoices = await client.Invoices.QueryInvoices(
+                    "invoiceDate < 2021-12-01 AND outstandingBalanceAmount > 0", 
+                    "Customer", 
+                    "invoiceDate asc", 
                     100, 
                     pageNumber
                 );
 
-                if (companies?.Value?.Records == null)
+                if (invoices?.Value?.Records == null)
                 {
                     break;
                 }
 
-                foreach (var company in companies.Value.Records)
+                foreach (var invoice in invoices.Value.Records)
                 {
-                    Console.WriteLine($"Company: {company.CompanyName}");
-                    Console.WriteLine($"Phone: {company.PhoneNumber}");
-                    Console.WriteLine($"ApEmail: {company.ApEmailAddress}");
-                    Console.WriteLine($"ArEmail: {company.ArEmailAddress}");
-                    Console.WriteLine();
-
                     entries.Add((new Entry
                     {
-                        Company = company.CompanyName, 
-                        Phone = company.PhoneNumber,
-                        ApEmail = company.ApEmailAddress,
-                        ArEmail = company.ArEmailAddress
+                        InvoiceId = invoice.InvoiceId,
+                        InvoiceDate = invoice.InvoiceDate,
+                        OutstandingBalance = invoice.OutstandingBalanceAmount,
+                        PrimaryContact = invoice.CustomerPrimaryContact?.ContactName
                     }));
                 }
                 
                 var currentDirectory = Directory.GetCurrentDirectory();
                 const string fileName = "Results.csv";
                 var filePath = $"{currentDirectory}\\..\\..\\..\\{fileName}";
-                
+
                 try
                 {
-                    Console.WriteLine($"Writing contents to CSV file \"{fileName}\"...");
                     await using (var writer = new StreamWriter($"{filePath}"))
                     await using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
                     {
                         await csv.WriteRecordsAsync(entries);
                     }
-                    Console.WriteLine($"Successfully created file: {filePath}");
                 }
                 catch (Exception e)
                 {
@@ -83,14 +78,16 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
 
                 pageNumber++;
             }
+            
+            Console.WriteLine("Please check project directory for results.");
         }
     }
     
     public class Entry
     {
-        public string? Company { get; set; }
-        public string? Phone { get; set; }
-        public string? ApEmail { get; set; }
-        public string? ArEmail { get; set; }
+        public Guid? InvoiceId { get; set; }
+        public DateTime? InvoiceDate { get; set; }
+        public double? OutstandingBalance { get; set; }
+        public string? PrimaryContact { get; set; }
     }
 }
