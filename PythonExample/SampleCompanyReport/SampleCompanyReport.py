@@ -1,4 +1,4 @@
-from lockstep.lockstep_api import LockstepApi
+from lockstep import LockstepApi
 import os
 import csv
 
@@ -20,7 +20,7 @@ def createClient(apikey):
     Takes in an Api Key and creates the Lockstep Client
     """
     env = 'sbx'
-    client = LockstepApi(env)
+    client = LockstepApi(env, "Company Report App")
     client.with_api_key(apikey)
     if not client:
         print("ISSUE WITH CLIENT, NO API KEY OR WRONG ENVIRONMENT")
