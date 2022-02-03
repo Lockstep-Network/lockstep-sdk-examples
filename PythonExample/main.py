@@ -13,7 +13,7 @@ def retrieve_api_key():
 
 def create_client(apikey):
     env = 'sbx'
-    client = LockstepApi(env)
+    client = LockstepApi(env, 'DEFAULT_APP_NAME')
     client.with_api_key(apikey)
     if not client:
         print("ISSUE WITH CLIENT, NO API KEY OR WRONG ENVIRONMENT")
