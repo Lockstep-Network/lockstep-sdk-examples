@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "axios": "^0.24.0",
-    "lockstep-sdk": "^2022.4.32-beta1",
+    "csv-writer": "^1.6.0",
+    "lockstep-sdk": "^2022.5.19",
     "types": "^0.1.1",
     "typescript": "^4.5.5"
   },
