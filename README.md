@@ -22,22 +22,22 @@ The Lockstep Platform API is documented on the [Lockstep developer site](https:/
 
 ## Using these examples
 
-Lockstep publishes example code that demonstrates how to use the Lockstep API for common tasks such as exporting data and importing data.
+Lockstep publishes example code that demonstrates how to use the Lockstep API for common tasks such as exporting data and importing data.  All example code is published under the MIT license and is free for commercial and noncommercial reuse.
 
 * C# Examples
-** [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/CsharpExample/CsharpExample)
-** [Export Companies](https://github.com/Lockstep-Network/lockstep-sdk-examples/tree/main/CsharpExample/CompanyReport)
-** [Collections Report](https://github.com/Lockstep-Network/lockstep-sdk-examples/tree/main/CsharpExample/CollectionsReport)
+  * [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/CsharpExample/CsharpExample)
+  * [Export Companies](https://github.com/Lockstep-Network/lockstep-sdk-examples/tree/main/CsharpExample/CompanyReport)
+  * [Collections Report](https://github.com/Lockstep-Network/lockstep-sdk-examples/tree/main/CsharpExample/CollectionsReport)
 * Java Examples
-** [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/JavaExample/src/main/java/io/lockstep/App.java)
-** [Export Companies](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/JavaExample/src/main/java/io/lockstep/CollectionsReport.java)
-** [Collections Report](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/JavaExample/src/main/java/io/lockstep/CollectionsReport.java)
+  * [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/JavaExample/src/main/java/io/lockstep/App.java)
+  * [Export Companies](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/JavaExample/src/main/java/io/lockstep/CollectionsReport.java)
+  * [Collections Report](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/JavaExample/src/main/java/io/lockstep/CollectionsReport.java)
 * Python Examples
-** [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/PythonExample/main.py)
-** [Export Companies](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/PythonExample/SampleCompanyReport/SampleCompanyReport.py)
+  * [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/PythonExample/main.py)
+  * [Export Companies](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/PythonExample/SampleCompanyReport/SampleCompanyReport.py)
 * Ruby Examples
-** [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/RubyExample/main.rb)
+  * [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/RubyExample/main.rb)
 * TypeScript Examples
-** [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/TypescriptExample/index.ts)
-** [Export Companies](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/TypescriptExample/companyReport.ts)
+  * [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/TypescriptExample/index.ts)
+  * [Export Companies](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/TypescriptExample/companyReport.ts)
 
