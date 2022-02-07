@@ -3,13 +3,13 @@ Many types of products examine invoices for a customer and provide feedback on t
 
 We use the [Query Invoices API](https://developer.lockstep.io/reference/get_api-v1-invoices-query) to retrieve a collection of invoices. To fetch a large number of invoices, we must use [filtering and pagination](https://developer.lockstep.io/docs/querying-with-searchlight). Here's how it works
 
-## Step 1: Add LockstepSdk gem to Gemfile
-First,  you'll need to add the LockstepSdk gem. You can do so by adding the gem.
+## Step 1: Add lockstep_sdk gem to Gemfile
+First,  you'll need to add the lockstep_sdk gem. You can do so by adding the gem.
 ```Gemfile
-gem LockstepSdk
+gem lockstep_sdk
 ```
 
-Then you'll be able to start on your ruby file and utilize the LockstepSdk gem.
+Then you'll be able to start on your ruby file and utilize the lockstep_sdk gem.
 ```ruby
 require 'lockstep_sdk/lockstep_api'
 require 'json' 
