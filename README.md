@@ -18,7 +18,7 @@ The Lockstep Platform API is documented on the [Lockstep developer site](https:/
 | Java | [lockstep-sdk-java](https://github.com/Lockstep-Network/lockstep-sdk-java) | [![Maven Central](https://img.shields.io/maven-central/v/io.lockstep/lockstepsdk)](https://search.maven.org/artifact/io.lockstep/lockstepsdk) |
 | JavaScript and TypeScript | [lockstep-sdk-typescript](https://github.com/Lockstep-Network/lockstep-sdk-typescript) | [![npm](https://img.shields.io/npm/v/lockstep-sdk)](https://www.npmjs.com/package/lockstep-sdk) |
 | Python | [lockstep-sdk-python](https://github.com/Lockstep-Network/lockstep-sdk-python) | [![PyPI](https://img.shields.io/pypi/v/lockstep-sdk)](https://pypi.org/project/lockstep-sdk/) |
-| Ruby | [lockstep-sdk-ruby](https://github.com/Lockstep-Network/lockstep-sdk-ruby) | [![Gem](https://img.shields.io/gem/v/LockstepSdk)](https://rubygems.org/gems/LockstepSdk) |
+| Ruby | [lockstep-sdk-ruby](https://github.com/Lockstep-Network/lockstep-sdk-ruby) | [![Gem](https://img.shields.io/gem/v/lockstep_sdk)](https://rubygems.org/gems/lockstep_sdk) |
 
 ## Using these examples
 
