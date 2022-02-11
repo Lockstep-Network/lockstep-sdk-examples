@@ -2,11 +2,11 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CsharpExample", "CsharpExample\CsharpExample.csproj", "{75034973-BF65-4D09-8150-7085997D9901}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LockstepSDK", "..\..\lockstep-sdk-csharp\src\LockstepSDK.csproj", "{387ABA39-6A8B-4D2F-8556-84652C4ABFDA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyReport", "CompanyReport\CompanyReport.csproj", "{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CollectionsReport", "CollectionsReport\CollectionsReport.csproj", "{D9C928D4-4570-4236-97AC-14989DE5EE6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectorExample", "ConnectorExample\ConnectorExample.csproj", "{D8F123BF-1DDF-4383-9978-86E0462EA108}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,10 +18,6 @@ Global
 		{75034973-BF65-4D09-8150-7085997D9901}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75034973-BF65-4D09-8150-7085997D9901}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75034973-BF65-4D09-8150-7085997D9901}.Release|Any CPU.Build.0 = Release|Any CPU
-		{387ABA39-6A8B-4D2F-8556-84652C4ABFDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{387ABA39-6A8B-4D2F-8556-84652C4ABFDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{387ABA39-6A8B-4D2F-8556-84652C4ABFDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{387ABA39-6A8B-4D2F-8556-84652C4ABFDA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9BD95CA-0FDD-43FB-8085-58F4C0CC00CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -30,5 +26,9 @@ Global
 		{D9C928D4-4570-4236-97AC-14989DE5EE6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D9C928D4-4570-4236-97AC-14989DE5EE6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D9C928D4-4570-4236-97AC-14989DE5EE6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8F123BF-1DDF-4383-9978-86E0462EA108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8F123BF-1DDF-4383-9978-86E0462EA108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8F123BF-1DDF-4383-9978-86E0462EA108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8F123BF-1DDF-4383-9978-86E0462EA108}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
