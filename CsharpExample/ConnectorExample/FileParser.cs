@@ -1,4 +1,7 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using System.Xml;
 
 namespace LockstepExamples
 {
@@ -15,7 +18,8 @@ namespace LockstepExamples
             foreach (var file in incomingFiles)
             {
                 var doc = new XmlDocument();
-                doc.Load(file);
+                var contents = await File.ReadAllTextAsync(file);
+                doc.LoadXml(contents);
                 list.Add(doc);
             }
 

@@ -1,4 +1,8 @@
-﻿using CommandLine;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using CommandLine;
 
 namespace LockstepExamples
 {
@@ -16,10 +20,12 @@ namespace LockstepExamples
                     {
                         // We've collected a list of files. Let's parse them into a collection of objects
                         var invoices = await FileParser.ParseInvoices(incomingFiles);
+                        List<string> filenames = new List<string>();
+                        var files = ModelConverter.ConvertInvoices(invoices);
 
                         // Let's convert them to the Lockstep SFTP format
                         var zipArchiveName = $"{DateTime.Today.ToString("yyyy-MM-dd")}_batch.zip";
-                        await FileSyncAPI.CreateZipFile(zipArchiveName, files);
+                        await BatchSubmitter.CreateZipFile(zipArchiveName, filenames);
 
                         // Upload the collection of data to the Lockstep API
                         var sync = await BatchSubmitter.UploadToLockstep(o.ServerUrl, o.ApiKey, zipArchiveName);
