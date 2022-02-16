@@ -5,7 +5,7 @@ using System.Xml;
 
 namespace LockstepExamples
 {
-    public class FileParser
+    public static class FileParser
     {
         /// <summary>
         /// Loads in all documents as XML files

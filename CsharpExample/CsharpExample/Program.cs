@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using LockstepSDK;
 
 namespace LockstepExamples // Note: actual namespace depends on the project name.
 {
-    public class CSharpExample
+    public static class CSharpExample
     {
         public static async Task Main(string[] args)
         {
@@ -40,7 +38,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
                     pageNumber
                 );
 
-                if (invoices?.Value?.Records == null)
+                if (invoices.Value?.Records == null)
                 {
                     break;
                 }
@@ -49,7 +47,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
                 {
                     Console.WriteLine($"Invoice {count++}: {invoice.InvoiceId}");
                     Console.WriteLine($"Company Name: {invoice.Customer?.CompanyName}");
-                    Console.WriteLine($"Outstanding Balance: {string.Format("{0:C}", invoice.OutstandingBalanceAmount)}");
+                    Console.WriteLine($"Outstanding Balance: {invoice.OutstandingBalanceAmount:C}");
                     Console.WriteLine(); // Space for readability.
                 }
 

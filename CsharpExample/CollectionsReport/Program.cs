@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using LockstepSDK;
@@ -13,7 +12,7 @@ using CsvHelper;
 
 namespace LockstepExamples // Note: actual namespace depends on the project name.
 {
-    public class CollectionsReport
+    public static class CollectionsReport
     {
         public static async Task Main(string[] args)
         {
@@ -43,7 +42,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
                     pageNumber
                 );
 
-                if (invoices?.Value?.Records == null)
+                if (invoices.Value?.Records == null)
                 {
                     break;
                 }

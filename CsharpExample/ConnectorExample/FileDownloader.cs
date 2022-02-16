@@ -1,21 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using LockstepSDK;
 using Renci.SshNet;
-using Renci.SshNet.Sftp;
 
 namespace LockstepExamples
 {
 
     public class FileDownloader
     {
-        private string _hostname;
-        private string _username;
-        private string _password;
-        private int _port;
-        private string _keyFile;
-        private ConnectionInfo _connection;
+        private readonly ConnectionInfo _connection;
 
         /// <summary>
         /// A connection to a remote site via SFTP
@@ -27,24 +20,19 @@ namespace LockstepExamples
         /// <param name="keyFile">The full path of a file to use </param>
         public FileDownloader(string hostname, string user, string pw, int port, string keyFile)
         {
-            this._hostname = hostname;
-            this._username = user;
-            this._password = pw;
-            this._port = port;
-            this._keyFile = keyFile;
             if (!File.Exists(keyFile))
             {
                 throw new Exception($"Unable to find keyfile: {keyFile}");
             }
             
             // Set up the connection
-            var kfile = new PrivateKeyFile(this._keyFile);
+            var key = new PrivateKeyFile(keyFile);
             var methods = new List<AuthenticationMethod>
             {
-                new PasswordAuthenticationMethod(this._username, this._password),
-                new PrivateKeyAuthenticationMethod(user, new[] { kfile })
+                new PasswordAuthenticationMethod(user, pw),
+                new PrivateKeyAuthenticationMethod(user, new[] { key })
             };
-            this._connection = new ConnectionInfo(this._hostname, this._port, this._username, methods.ToArray());
+            this._connection = new ConnectionInfo(hostname, port, user, methods.ToArray());
         }
 
         /// <summary>

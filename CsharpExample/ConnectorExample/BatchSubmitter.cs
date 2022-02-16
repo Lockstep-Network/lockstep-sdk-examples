@@ -8,7 +8,7 @@ using LockstepSDK;
 
 namespace LockstepExamples
 {
-    public class BatchSubmitter
+    public static class BatchSubmitter
     {
         /// <summary>
         /// Creates a zip file containing csv files
@@ -96,7 +96,7 @@ namespace LockstepExamples
             {
                 return result.Value;
             }
-            throw new Exception($"Failed to upload zip file: {result?.Error?.Content}");
+            throw new Exception($"Failed to upload zip file: {result.Error?.Content}");
         }
     }
 }

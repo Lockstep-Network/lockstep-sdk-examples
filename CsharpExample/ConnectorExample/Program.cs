@@ -6,12 +6,12 @@ using CommandLine;
 
 namespace LockstepExamples
 {
-    public class ConnectorExample
+    public static class ConnectorExample
     {
         public static async Task Main(string[] args)
         {
             await Parser.Default.ParseArguments<Options>(args)
-                .WithParsedAsync<Options>(async o =>
+                .WithParsedAsync(async o =>
                 {
                     // First, connect to the SFTP site and download the file
                     var downloader = new FileDownloader(o.Hostname, o.Username, o.Password, o.PortNumber, o.KeyFile);
@@ -19,12 +19,14 @@ namespace LockstepExamples
                     try
                     {
                         // We've collected a list of files. Let's parse them into a collection of objects
-                        var invoices = await FileParser.ParseInvoices(incomingFiles);
-                        List<string> filenames = new List<string>();
-                        var files = ModelConverter.ConvertInvoices(invoices);
+                        var invoiceXml = await FileParser.ParseInvoices(incomingFiles);
+                        var invoices = ModelConverter.ConvertInvoices(invoiceXml);
+                        
+                        // Save invoices to CSV files
+                        var filenames = new List<string> { ModelConverter.SaveBatchToCsv(invoices, "invoices.csv") };
 
                         // Let's convert them to the Lockstep SFTP format
-                        var zipArchiveName = $"{DateTime.Today.ToString("yyyy-MM-dd")}_batch.zip";
+                        var zipArchiveName = $"{DateTime.Today:yyyy-MM-dd}_batch.zip";
                         await BatchSubmitter.CreateZipFile(zipArchiveName, filenames);
 
                         // Upload the collection of data to the Lockstep API
