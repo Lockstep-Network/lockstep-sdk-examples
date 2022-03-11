@@ -8,7 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="LockstepSdk" Version="2022.7.31" />
+      <PackageReference Include="LockstepSdk" Version="2022.9.56" />
     </ItemGroup>
 
 </Project>
