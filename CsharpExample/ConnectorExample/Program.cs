@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using CommandLine;
 
@@ -37,12 +38,9 @@ namespace LockstepExamples
                     }
                     finally
                     {
-                        foreach (var f in incomingFiles)
+                        foreach (var f in incomingFiles.Where(f => File.Exists(f)))
                         {
-                            if (File.Exists(f))
-                            {
-                                File.Delete(f);
-                            }
+                            File.Delete(f);
                         }
                     }
 
