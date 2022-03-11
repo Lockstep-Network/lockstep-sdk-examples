@@ -9,17 +9,22 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
     {
         public static async Task Main(string[] args)
         {
-            var client = LockstepApi.WithEnvironment(LockstepEnv.SBX);
-            var apiKey = Environment.GetEnvironmentVariable("LOCKSTEPAPI_SBX");
-            
-            if (apiKey != null)
-            {
-                client.WithApiKey(apiKey);
-            }
-            
+            var client = LockstepApi.WithEnvironment(LockstepEnv.SBX)
+                .WithApiKey(Environment.GetEnvironmentVariable("LOCKSTEPAPI_SBX"));
+
+            // Test first API call
             var result = await client.Status.Ping();
-            Console.WriteLine("Ping result: " + JsonSerializer.Serialize(result));
-            Console.WriteLine();  // Space for readability.
+            if (!result.Success || !result.Value.LoggedIn)
+            {
+                Console.WriteLine("Your API key is not valid.");
+                Console.WriteLine("Please set the environment variable LOCKSTEPAPI_SBX and try again.");
+                return;
+            }
+
+            // Basic diagnostics
+            Console.WriteLine($"Ping result: {result.Value.UserName} ({result.Value.UserStatus})");
+            Console.WriteLine($"Server status: {result.Value.Environment} {result.Value.Version}");
+            Console.WriteLine();
 
             var pageNumber = 0;
             var count = 0;
