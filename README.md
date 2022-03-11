@@ -29,6 +29,7 @@ Lockstep publishes example code that demonstrates how to use the Lockstep API fo
   * [Export Companies](https://github.com/Lockstep-Network/lockstep-sdk-examples/tree/main/CsharpExample/CompanyReport)
   * [Collections Report](https://github.com/Lockstep-Network/lockstep-sdk-examples/tree/main/CsharpExample/CollectionsReport)
   * [Example Connector](https://github.com/Lockstep-Network/lockstep-sdk-examples/tree/main/CsharpExample/ConnectorExample)
+  * [Performance Test](https://github.com/Lockstep-Network/lockstep-sdk-examples/tree/main/CsharpExample/PerformanceTest)
 * Java Examples
   * [Export Invoices](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/JavaExample/src/main/java/io/lockstep/App.java)
   * [Export Companies](https://github.com/Lockstep-Network/lockstep-sdk-examples/blob/main/JavaExample/src/main/java/io/lockstep/CollectionsReport.java)
