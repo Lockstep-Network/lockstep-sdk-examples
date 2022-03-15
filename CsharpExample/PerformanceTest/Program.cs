@@ -26,7 +26,7 @@ namespace LockstepExamples
             
             // Run a series of a thousand queries for invoices
             var performance = new List<Tuple<long, int>>();
-            for (var i = 0; i < 1000; i++)
+            while (performance.Count < 200)
             {
                 var pageNumber = 0;
 

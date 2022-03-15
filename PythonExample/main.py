@@ -1,9 +1,11 @@
 from lockstep.lockstep_api import LockstepApi
-import os
 
+import lockstep
+import os
+import json
 
 def retrieve_api_key():
-    API_KEY = os.environ.get('LOCKSTEP_API_SBX')
+    API_KEY = os.environ.get('LOCKSTEPAPI_SBX')
     if API_KEY is None:
         print('NO API KEY')
     else:
@@ -25,9 +27,13 @@ def create_client(apikey):
 def main():
     API_KEY = retrieve_api_key()
     client = create_client(API_KEY)
-
     status_results = client.status.ping()
     print(f"StatusResult: {status_results}")
+    if not status_results.success or not status_results.value or not status_results.value.loggedIn:
+        print("Your API key is not valid.")
+        print("Please set the environment variable LOCKSTEPAPI_SBX and try again.")
+        exit()
+    print(f"Logged in as {status_results.value.accountName} {status_results.value.userName}")
 
     page_num = 0
     count = 1
@@ -40,13 +46,13 @@ def main():
             100,
             page_num)
 
-        if len(invoices['records']) == 0:
+        if len(invoices.value.records) == 0:
             break
 
-        for record in invoices['records']:
-            print(f"Invoice {count}: {record['invoiceId']}")
-            print(f"Company name: {record['companyId']}")
-            print(f"Outstanding Balance: ${record['outstandingBalanceAmount']} \n")
+        for invoice in invoices.value.records:
+            print(f"Invoice {count}: {invoice.invoiceId}")
+            print(f"Company name: {invoice.companyId}")
+            print(f"Outstanding Balance: ${invoice.outstandingBalanceAmount} \n")
             count += 1
 
         page_num += 1
