@@ -22,57 +22,42 @@ def createClient(apikey):
     env = 'sbx'
     client = LockstepApi(env, "Company Report App")
     client.with_api_key(apikey)
-    if not client:
-        print("ISSUE WITH CLIENT, NO API KEY OR WRONG ENVIRONMENT")
-    else:
-        print(f"CLIENT WAS CREATED SUCCESSFULLY: {client}")
-        return client
+    status_results = client.status.ping()
+    if not status_results.success or not status_results.value or not status_results.value.loggedIn:
+        print("Your API key is not valid.")
+        print("Please set the environment variable LOCKSTEPAPI_SBX and try again.")
+        exit()
+    print(f"Logged in as {status_results.value.accountName} {status_results.value.userName}")
+    return client
+
 
 
 def main():
-    # Retrieve Api Key
     yourApiKey = retrieveApiKey()
-
-    # Create Client
     client = createClient(yourApiKey)
 
-
-    """
-    Here you can define your desired query
-    (
-        "Filter",
-        "Include",
-        "Order",
-        "pageSize",
-        "pageNumber"
-    )
-    """
+    # Define pagination rules
     pageSize = 5
     pageNumber = 1
-    records = client.companies.query_companies(
-        "",
-        "",
-        "",
+    
+    # Here you can define your desired query
+    companies = client.companies.query_companies(
+        None,
+        None,
+        None,
         pageSize,
         pageNumber
     )
 
-    """
-    the result variable access the initial key 'records' and
-    returns the list of key : value pairs
-    """
-    result = records['records']
-
-    """
-    Here we are defining a list of headers to write to help with column description
-    """
+    # Here we are defining a list of headers to write to help with column description
     yourFileName = 'SampleCompanyReport.csv'
     headers = ['CompanyName', 'CompanyPhoneNumber', 'AREmailAddress', 'APEmailAddress']
     writer = csv.writer(open(yourFileName, 'w'), lineterminator='\n')
     writer.writerow(headers)
 
-    for item in result:
-        rows = [item['companyName'], item['corpPhone'], item['arEmailAddress'], item['apEmailAddress']]
+    # Print out all the companies in the result
+    for company in companies.value.records:
+        rows = [company.companyName, company.phoneNumber, company.arEmailAddress, company.apEmailAddress]
         writer.writerow(rows)
 
 
