@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Text.Json;
 using System.Threading.Tasks;
+using CSVFile;
 using LockstepSDK;
-using CsvHelper;
 
 namespace LockstepExamples // Note: actual namespace depends on the project name.
 {
@@ -65,19 +63,13 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
                         ArEmail = company.ArEmailAddress
                     }));
                 }
-                
-                var currentDirectory = Directory.GetCurrentDirectory();
-                const string fileName = "Results.csv";
-                var filePath = $"{currentDirectory}\\..\\..\\..\\{fileName}";
+
+                var filePath = Path.GetTempFileName();
                 
                 try
                 {
-                    Console.WriteLine($"Writing contents to CSV file \"{fileName}\"...");
-                    await using (var writer = new StreamWriter($"{filePath}"))
-                    await using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-                    {
-                        await csv.WriteRecordsAsync(entries);
-                    }
+                    Console.WriteLine($"Writing contents to CSV file \"{filePath}\"...");
+                    await File.WriteAllTextAsync(filePath, CSV.Serialize(entries));
                     Console.WriteLine($"Successfully created file: {filePath}");
                 }
                 catch (Exception e)

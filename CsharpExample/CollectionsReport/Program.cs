@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
-using System.Text.Json;
 using System.Threading.Tasks;
+using CSVFile;
 using LockstepSDK;
-using CsvHelper;
 
 // I would like to see a sample program that shows how to query for invoices with an outstanding balance older than a certain age,
 // then fetch the primary contact person for that invoice, and export the list to CSV
@@ -63,17 +61,10 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
                     }));
                 }
                 
-                var currentDirectory = Directory.GetCurrentDirectory();
-                const string fileName = "Results.csv";
-                var filePath = $"{currentDirectory}\\..\\..\\..\\{fileName}";
-
+                var filePath = Path.GetTempFileName();
                 try
                 {
-                    await using (var writer = new StreamWriter($"{filePath}"))
-                    await using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
-                    {
-                        await csv.WriteRecordsAsync(entries);
-                    }
+                    await File.WriteAllTextAsync(filePath, CSV.Serialize(entries));
                 }
                 catch (Exception e)
                 {
@@ -90,7 +81,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
     public class Entry
     {
         public Guid? InvoiceId { get; set; }
-        public DateTime? InvoiceDate { get; set; }
+        public string? InvoiceDate { get; set; }
         public double? OutstandingBalance { get; set; }
         public string? PrimaryContact { get; set; }
     }
