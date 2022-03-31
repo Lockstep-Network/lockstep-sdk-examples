@@ -24,7 +24,7 @@ namespace LockstepExamples
                         var invoices = ModelConverter.ConvertInvoices(invoiceXml);
                         
                         // Save invoices to CSV files
-                        var filenames = new List<string> { ModelConverter.SaveBatchToCsv(invoices, "invoices.csv") };
+                        var filenames = new List<string> { await ModelConverter.SaveBatchToCsv(invoices, "invoices.csv") };
 
                         // Let's convert them to the Lockstep SFTP format
                         var zipArchiveName = $"{DateTime.Today:yyyy-MM-dd}_batch.zip";

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml;
-using CsvHelper;
+using CSVFile;
 using LockstepSDK;
 
 namespace LockstepExamples
@@ -15,16 +15,14 @@ namespace LockstepExamples
             return System.Array.Empty<InvoiceSyncModel>();
         }
         
-        public static string SaveBatchToCsv(IEnumerable<InvoiceSyncModel> list, string filename)
+        public static async Task<string> SaveBatchToCsv(IEnumerable<InvoiceSyncModel> list, string filename)
         {
             var filePath = Path.Combine(Path.GetTempPath(), filename);
             if (File.Exists(filePath))
             {
                 File.Delete(filePath);
             }
-            using var writer = new StreamWriter(filePath);
-            using var csvWriter = new CsvWriter(writer, CultureInfo.InvariantCulture);
-            csvWriter.WriteRecords(list);
+            await File.WriteAllTextAsync(filePath, CSV.Serialize(list));
             return filePath;
         }
     }
