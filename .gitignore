@@ -359,4 +359,7 @@ TypescriptExample/.env
 .vscode
 
 # Ignore azurite example files
-CsharpExample/__*
+__azurite*
+__blobstorage__
+SdkGenerator/lockstep-sdk.json
+.idea
