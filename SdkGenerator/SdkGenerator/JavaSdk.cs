@@ -33,6 +33,7 @@ namespace SwaggerDownload
             {
                 s = api.FindSchema(typeName).EnumType;
             }
+
             switch (s)
             {
                 case "string":
@@ -69,10 +70,12 @@ namespace SwaggerDownload
                     s = "byte[]";
                     break;
             }
+
             if (isArray)
             {
                 s += "[]";
             }
+
             if (s.EndsWith("FetchResult"))
             {
                 s = $"FetchResult<{s[..^11]}>";
@@ -99,7 +102,8 @@ namespace SwaggerDownload
                     sb.AppendLine();
                     foreach (var import in GetImports(project, api, item))
                     {
-                        if (!string.IsNullOrWhiteSpace(import) && !import.StartsWith($"import {project.Java.Namespace}.models."))
+                        if (!string.IsNullOrWhiteSpace(import) &&
+                            !import.StartsWith($"import {project.Java.Namespace}.models."))
                         {
                             sb.AppendLine(import);
                         }
@@ -150,7 +154,8 @@ namespace SwaggerDownload
 
                     sb.AppendLine("};");
                     var classPath = Path.Combine(project.Java.Folder, "src", "main", "java",
-                        project.Java.Namespace.Replace('.', Path.PathSeparator), "models", item.Name + ".java");
+                        project.Java.Namespace.Replace('.', Path.DirectorySeparatorChar), "models",
+                        item.Name + ".java");
                     await File.WriteAllTextAsync(classPath, sb.ToString());
                 }
             }
@@ -188,7 +193,8 @@ namespace SwaggerDownload
                 sb.AppendLine("    /**");
                 sb.AppendLine($"     * Constructor for the {cat} API collection");
                 sb.AppendLine("     *");
-                sb.AppendLine($"     * @param client A {{@link {project.Java.Namespace}.{project.Java.ClassName}}} platform client");
+                sb.AppendLine(
+                    $"     * @param client A {{@link {project.Java.Namespace}.{project.Java.ClassName}}} platform client");
                 sb.AppendLine("     */");
                 sb.AppendLine($"    public {cat}Client(@NotNull {project.Java.ClassName} client) {{");
                 sb.AppendLine("        super();");
@@ -201,20 +207,25 @@ namespace SwaggerDownload
                     if (endpoint.Category == cat && !endpoint.Deprecated)
                     {
                         sb.AppendLine();
-                        sb.Append(endpoint.DescriptionMarkdown.ToJavaDoc(4, $"A {{@link {project.Java.Namespace}.models.{project.Java.ResponseClass}}} containing the results", endpoint.Parameters));
+                        sb.Append(endpoint.DescriptionMarkdown.ToJavaDoc(4,
+                            $"A {{@link {project.Java.Namespace}.models.{project.Java.ResponseClass}}} containing the results",
+                            endpoint.Parameters));
 
                         // Figure out the parameter list
                         var paramListStr = string.Join(", ", from p in endpoint.Parameters
                             select $"{FixupType(api, p.DataType, p.IsArray, !p.Required)} {p.Name}");
 
                         // What is our return type?
-                        var returnType = JavaTypeName(api, endpoint.ReturnDataType.DataType, endpoint.ReturnDataType.IsArray);
+                        var returnType = JavaTypeName(api, endpoint.ReturnDataType.DataType,
+                            endpoint.ReturnDataType.IsArray);
                         var requestType = returnType == "byte[]" ? "BlobRequest" : $"RestRequest<{returnType}>";
 
                         // Write the method
-                        sb.AppendLine($"    public @NotNull {project.Java.ResponseClass}<{returnType}> {endpoint.Name.ToCamelCase()}({paramListStr})");
+                        sb.AppendLine(
+                            $"    public @NotNull {project.Java.ResponseClass}<{returnType}> {endpoint.Name.ToCamelCase()}({paramListStr})");
                         sb.AppendLine("    {");
-                        sb.AppendLine($"        {requestType} r = new {requestType}(this.client, \"{endpoint.Method.ToUpper()}\", \"{endpoint.Path}\");");
+                        sb.AppendLine(
+                            $"        {requestType} r = new {requestType}(this.client, \"{endpoint.Method.ToUpper()}\", \"{endpoint.Path}\");");
 
                         // Add parameters options
                         foreach (var o in endpoint.Parameters)
@@ -250,6 +261,7 @@ namespace SwaggerDownload
                         {
                             sb.AppendLine($"        return r.Call({returnType}.class);");
                         }
+
                         sb.AppendLine("    }");
                     }
                 }
@@ -258,7 +270,8 @@ namespace SwaggerDownload
                 sb.AppendLine("}");
 
                 // Write this category to a file
-                var classPath = Path.Combine(project.Java.Folder, project.Java.Namespace.Replace(".", "\\"), "clients",
+                var classPath = Path.Combine(project.Java.Folder, "src", "main", "java",
+                    project.Java.Namespace.Replace(".", "\\"), "clients",
                     $"{cat}Client.java");
                 await File.WriteAllTextAsync(classPath, sb.ToString());
             }
@@ -273,6 +286,7 @@ namespace SwaggerDownload
                     list.Add("FetchResult");
                     list.Add("type-token");
                 }
+
                 var innerType = name[..^11];
                 AddImport(api, innerType, list);
             }
@@ -350,6 +364,7 @@ namespace SwaggerDownload
 
         public static async Task Export(ProjectSchema project, ApiSchema api)
         {
+            if (project.Java == null) return;
             await ExportSchemas(project, api);
             await ExportEndpoints(project, api);
 
@@ -357,11 +372,15 @@ namespace SwaggerDownload
             await ScribanFunctions.ExecuteTemplate(
                 Path.Combine(".", "templates", "java", "ApiClient.java.scriban"),
                 project, api,
-                Path.Combine(project.Java.Folder, "src", "main", "java", project.Java.Namespace.Replace('.', Path.PathSeparator), project.Java.ClassName + ".java"));
+                Path.Combine(project.Java.Folder, "src", "main", "java",
+                    project.Java.Namespace.Replace('.', Path.DirectorySeparatorChar),
+                    project.Java.ClassName + ".java"));
             await StringExtensions.PatchFile(Path.Combine(project.Java.Folder, "pom.xml"),
                 $"<artifactId>{project.Java.ModuleName}<\\/artifactId>\\s+<version>[\\d\\.]+<\\/version>",
                 $"<artifactId>{project.Java.ModuleName}</artifactId>\r\n    <version>{api.Semver4}</version>");
-            await StringExtensions.PatchFile(Path.Combine(project.Java.Folder, "src", "main", project.Java.Namespace.Replace('.', Path.PathSeparator), "api", "RestRequest.java"),
+            await StringExtensions.PatchFile(
+                Path.Combine(project.Java.Folder, "src", "main", "java",
+                    project.Java.Namespace.Replace('.', Path.DirectorySeparatorChar), "RestRequest.java"),
                 "request.addHeader\\(\"SdkVersion\", \"[\\d\\.]+\"\\);",
                 $"request.addHeader(\"SdkVersion\", \"{api.Semver4}\");");
         }

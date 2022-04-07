@@ -14,6 +14,7 @@ namespace SwaggerDownload
         {
             try
             {
+                Directory.CreateDirectory(Path.GetDirectoryName(outputFile));
                 var templateText = await File.ReadAllTextAsync(templateName);
                 var template = Template.Parse(templateText);
                 var scriptObject1 = new ScriptObject();

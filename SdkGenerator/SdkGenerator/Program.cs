@@ -30,6 +30,11 @@ namespace SwaggerDownload
                     
                     // Fetch the environment and version number
                     var api = await DownloadFile.GenerateApi(project);
+                    if (api == null)
+                    {
+                        Console.WriteLine("Unable to retrieve API and version number successfully.");
+                        return;
+                    }
                     Console.WriteLine($"Retrieving swagger file from {project?.SwaggerUrl} (version {api.Semver2})...");
 
                     // Let's do some software development kits!

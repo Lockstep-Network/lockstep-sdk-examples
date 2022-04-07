@@ -71,7 +71,7 @@ namespace SwaggerDownload
                 var match = r.Match(contents);
                 if (match.Success)
                 {
-                    return match.Value;
+                    return match.Groups[1].Value;
                 }
             }
             catch (Exception ex)

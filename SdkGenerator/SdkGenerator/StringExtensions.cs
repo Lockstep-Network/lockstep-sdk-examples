@@ -224,6 +224,11 @@ namespace SwaggerDownload
 
         public static async Task PatchFile(string filename, string regex, string replacement)
         {
+            if (!File.Exists(filename))
+            {
+                Console.WriteLine($"Unable to find file {filename}");
+                return;
+            }
             var text = await File.ReadAllTextAsync(filename);
             var match = Regex.Match(text, regex);
             if (match.Success)

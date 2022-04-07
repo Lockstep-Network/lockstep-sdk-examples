@@ -307,6 +307,7 @@ namespace SwaggerDownload
 
         public static async Task Export(ProjectSchema project, ApiSchema api)
         {
+            if (project.Csharp == null) return;
             await ExportSchemas(project, api);
             await ExportEndpoints(project, api);
 

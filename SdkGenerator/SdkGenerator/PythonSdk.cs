@@ -114,7 +114,7 @@ namespace SwaggerDownload
 
                     sb.AppendLine();
 
-                    var modelPath = Path.Combine(project.Python.Folder, $"src\\{project.Python.ModuleName}\\models",
+                    var modelPath = Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "models",
                         item.Name.ToSnakeCase() + ".py");
                     await File.WriteAllTextAsync(modelPath, sb.ToString());
                 }
@@ -300,6 +300,7 @@ namespace SwaggerDownload
 
         public static async Task Export(ProjectSchema project, ApiSchema api)
         {
+            if (project.Python == null) return;
             await ExportSchemas(project, api);
             await ExportEndpoints(project, api);
 
