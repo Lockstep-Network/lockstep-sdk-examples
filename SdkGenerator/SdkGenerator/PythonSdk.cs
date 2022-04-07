@@ -99,7 +99,7 @@ namespace SwaggerDownload
                     foreach (var f in item.Fields.Where(f => f.DataTypeRef != null && f.DataType != item.Name))
                     {
                         sb.AppendLine(
-                            $"from {project.Python.ModuleName}.models.{f.DataType.ToSnakeCase()} import {f.DataType}");
+                            $"from {project.Python.Namespace}.models.{f.DataType.ToSnakeCase()} import {f.DataType}");
                     }
 
                     sb.AppendLine();
@@ -133,8 +133,8 @@ namespace SwaggerDownload
 
                 // Construct header
                 sb.Append(FileHeader(project));
-                sb.AppendLine($"from {project.Python.ModuleName}.{project.Python.ResponseClass.ProperCaseToSnakeCase()} import {project.Python.ResponseClass}");
-                sb.AppendLine($"from {project.Python.ModuleName}.error_result import ErrorResult");
+                sb.AppendLine($"from {project.Python.Namespace}.{project.Python.ResponseClass.ProperCaseToSnakeCase()} import {project.Python.ResponseClass}");
+                sb.AppendLine($"from {project.Python.Namespace}.error_result import ErrorResult");
                 foreach (var import in imports.Distinct())
                 {
                     sb.AppendLine(import);
@@ -144,7 +144,7 @@ namespace SwaggerDownload
                 sb.AppendLine("    \"\"\"");
                 sb.AppendLine($"    API methods related to {cat}");
                 sb.AppendLine("    \"\"\"");
-                sb.AppendLine($"    from {project.Python.ModuleName}.{project.Python.ClassName.ProperCaseToSnakeCase()} import {project.Python.ClassName}");
+                sb.AppendLine($"    from {project.Python.Namespace}.{project.Python.ClassName.ProperCaseToSnakeCase()} import {project.Python.ClassName}");
                 sb.AppendLine();
                 sb.AppendLine($"    def __init__(self, client: {project.Python.ClassName}):");
                 sb.AppendLine("        self.client = client");

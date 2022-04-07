@@ -82,7 +82,7 @@ namespace SwaggerDownload
                     sb.AppendLine("        end");
                     sb.AppendLine("    end");
                     sb.AppendLine("end");
-                    var modelPath = Path.Combine(project.Ruby.Folder, $"lib\\{project.Ruby.ModuleName}\\models",
+                    var modelPath = Path.Combine(project.Ruby.Folder, "lib", project.Ruby.Namespace, "models",
                         item.Name.ProperCaseToSnakeCase() + ".rb");
                     await File.WriteAllTextAsync(modelPath, sb.ToString());
                 }
@@ -139,7 +139,7 @@ namespace SwaggerDownload
                 sb.AppendLine("end");
 
                 // Write this category to a file
-                var classPath = Path.Combine(project.Ruby.Folder, "lib", project.Ruby.ModuleName, "clients",
+                var classPath = Path.Combine(project.Ruby.Folder, "lib", project.Ruby.Namespace, "clients",
                     cat.ProperCaseToSnakeCase() + "_client.rb");
                 await File.WriteAllTextAsync(classPath, sb.ToString());
             }

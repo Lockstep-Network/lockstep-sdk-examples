@@ -45,7 +45,7 @@ namespace {{ project.csharp.module_name }}
     
     {{~ for cat in api.categories ~}}
         /// <summary>
-        /// API methods related to {cat}
+        /// API methods related to {{ cat }}
         /// </summary>
         public {{ cat }}Client {{ cat }} { get; set; }
     {{~ end ~}}    
