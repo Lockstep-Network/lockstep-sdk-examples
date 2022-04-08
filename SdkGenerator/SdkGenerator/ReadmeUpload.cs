@@ -12,34 +12,25 @@ namespace SwaggerDownload
     {
         public static async Task UploadSchemas(ApiSchema api, string argReadmeKey, string format)
         {
-            int order = 1;
-
-            // Now consider uploading them to Readme
-            if (!String.IsNullOrWhiteSpace(argReadmeKey))
+            var order = 1;
+            if (!string.IsNullOrWhiteSpace(argReadmeKey))
             {
-                foreach (var schema in api.Schemas)
+                foreach (var schema in api.Schemas.Where(schema => schema.Fields != null))
                 {
-                    if (schema.Fields != null)
+                    try
                     {
-                        try
+                        var markdownText = format switch
                         {
-                            var markdownText = "";
-                            switch (format)
-                            {
-                                case "table":
-                                    markdownText = MakeMarkdownTable(schema, api);
-                                    break;
-                                case "list":
-                                    markdownText = MakeMarkdownBulletList(schema, api);
-                                    break;
-                            }
+                            "table" => MakeMarkdownTable(schema, api),
+                            "list" => MakeMarkdownBulletList(schema, api),
+                            _ => ""
+                        };
 
-                            await UploadToReadme(argReadmeKey, schema.Name, order++, markdownText);
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"Exception while parsing model for {schema.Name}: {e}");
-                        }
+                        await UploadToReadme(argReadmeKey, schema.Name, order++, markdownText);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine($"Exception while parsing model for {schema.Name}: {e}");
                     }
                 }
             }
@@ -61,12 +52,9 @@ namespace SwaggerDownload
             sb.AppendLine();
 
             // Link all the API endpoints that work with this model
-            foreach (var endpoint in api.Endpoints)
+            foreach (var endpoint in api.Endpoints.Where(endpoint => endpoint.ReturnDataType.DataType == item.Name))
             {
-                if (endpoint.ReturnDataType.DataType == item.Name)
-                {
-                    sb.AppendLine($"* [{endpoint.Name}](/reference/test)");
-                }
+                sb.AppendLine($"* [{endpoint.Name}](/reference/test)");
             }
 
             // Provide definitions for all the fields
@@ -126,7 +114,7 @@ namespace SwaggerDownload
                 var endpointDataType = endpoint.ReturnDataType.DataType.Replace("FetchResult", "");
                 if (endpointDataType == item.Name)
                 {
-                    string fixedPath = endpoint.Path.Substring(1).ToLower().Replace('/', '-').Replace("{", "").Replace("}", "");
+                    var fixedPath = endpoint.Path.Substring(1).ToLower().Replace('/', '-').Replace("{", "").Replace("}", "");
                     methods.Add($"* [{endpoint.Name}](/reference/{endpoint.Method.ToLower()}_{fixedPath})");
                 }
             }
