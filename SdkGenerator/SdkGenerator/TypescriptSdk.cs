@@ -254,7 +254,10 @@ namespace SwaggerDownload
             var types = new List<string>();
             foreach (var field in item?.Fields ?? new List<SchemaField>())
             {
-                AddImport(api, field?.DataType, types);
+                if (field?.DataType != item.Name)
+                {
+                    AddImport(api, field?.DataType, types);
+                }
             }
 
             return GenerateImportsFromList(types);
