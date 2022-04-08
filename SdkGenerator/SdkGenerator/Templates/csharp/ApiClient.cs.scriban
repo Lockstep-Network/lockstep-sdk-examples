@@ -27,7 +27,7 @@ using System.Threading.Tasks;
 using System.Web;
 
 
-namespace {{ project.csharp.module_name }} 
+namespace {{ project.csharp.namespace }} 
 {
     /// <summary>
     /// A client object that connects to the {{ project.project_name }}
@@ -118,6 +118,8 @@ namespace {{ project.csharp.module_name }}
     
         /// <summary>
         /// Configure this API client to use a JWT bearer token.
+        ///
+        /// {{ project.authentication_help }}
         /// </summary>
         /// <param name="token">The JWT bearer token to use for this API session</param>
         /// <returns></returns>
@@ -130,6 +132,8 @@ namespace {{ project.csharp.module_name }}
     
         /// <summary>
         /// Configures this API client to use an API Key.
+        ///
+        /// {{ project.authentication_help }}
         /// </summary>
         /// <param name="apiKey">The API key to use for this API session</param>
         /// <returns></returns>

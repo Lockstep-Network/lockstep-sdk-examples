@@ -11,6 +11,10 @@
         public string SwaggerUrl { get; set; }
         public EnvironmentSchema[] Environments { get; set; }
         public string SwaggerSchemaFolder { get; set; }
+        public string Keywords { get; set; }
+        public string Description { get; set; }
+        public string AuthenticationHelp { get; set; }
+        public string ReleaseNotes { get; set; }
         
         /// <summary>
         /// If you use a readme site, provide this information
@@ -30,7 +34,7 @@
         public LanguageSchema Java { get; set; }
         public LanguageSchema Python { get; set; }
         public LanguageSchema Ruby { get; set; }
-        public LanguageSchema TypeScript { get; set; }
+        public LanguageSchema Typescript { get; set; }
     }
 
     /// <summary>

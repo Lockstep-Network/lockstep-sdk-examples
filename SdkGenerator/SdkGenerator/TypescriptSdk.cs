@@ -22,7 +22,7 @@ namespace SwaggerDownload
                    + " *\n"
                    + $" * @author     {project.AuthorName} <{project.AuthorEmail}\n"
                    + $" * @copyright  {project.ProjectStartYear}-{DateTime.UtcNow.Year} {project.CopyrightHolder}\n"
-                   + $" * @link       {project.TypeScript.GithubUrl}\n"
+                   + $" * @link       {project.Typescript.GithubUrl}\n"
                    + " */\n";
         }
 
@@ -108,7 +108,7 @@ namespace SwaggerDownload
 
                     sb.AppendLine("};");
                 }
-                var modelPath = Path.Combine(project.TypeScript.Folder, "src", "models", item.Name + ".ts");
+                var modelPath = Path.Combine(project.Typescript.Folder, "src", "models", item.Name + ".ts");
                 await File.WriteAllTextAsync(modelPath, sb.ToString());
             }
         }
@@ -123,8 +123,8 @@ namespace SwaggerDownload
 
                 // Construct header
                 sb.AppendLine(FileHeader(project));
-                sb.AppendLine($"import {{ {project.TypeScript.ClassName} }} from \"..\";");
-                sb.AppendLine($"import {{ {project.TypeScript.ResponseClass} }} from \"..\";");
+                sb.AppendLine($"import {{ {project.Typescript.ClassName} }} from \"..\";");
+                sb.AppendLine($"import {{ {project.Typescript.ResponseClass} }} from \"..\";");
                 foreach (var import in GetImports(api, cat))
                 {
                     sb.AppendLine(import);
@@ -132,12 +132,12 @@ namespace SwaggerDownload
 
                 sb.AppendLine();
                 sb.AppendLine($"export class {cat}Client {{");
-                sb.AppendLine($"  private readonly client: {project.TypeScript.ClassName};");
+                sb.AppendLine($"  private readonly client: {project.Typescript.ClassName};");
                 sb.AppendLine();
                 sb.AppendLine("  /**");
                 sb.AppendLine("   * Internal constructor for this client library");
                 sb.AppendLine("   */");
-                sb.AppendLine($"  public constructor(client: {project.TypeScript.ClassName}) {{");
+                sb.AppendLine($"  public constructor(client: {project.Typescript.ClassName}) {{");
                 sb.AppendLine("    this.client = client;");
                 sb.AppendLine("  }");
 
@@ -172,7 +172,7 @@ namespace SwaggerDownload
 
                         // Write the method
                         sb.AppendLine(
-                            $"  {endpoint.Name.ToCamelCase()}({paramListStr}): Promise<{project.TypeScript.ResponseClass}<{returnType}>> {{");
+                            $"  {endpoint.Name.ToCamelCase()}({paramListStr}): Promise<{project.Typescript.ResponseClass}<{returnType}>> {{");
                         sb.AppendLine($"    const url = `{endpoint.Path.Replace("{", "${")}`;");
                         if (options.Count > 0)
                         {
@@ -200,7 +200,7 @@ namespace SwaggerDownload
                 sb.AppendLine("}");
 
                 // Write this category to a file
-                var classPath = Path.Combine(project.TypeScript.Folder, "src", "clients", $"{cat}Client.ts");
+                var classPath = Path.Combine(project.Typescript.Folder, "src", "clients", $"{cat}Client.ts");
                 await File.WriteAllTextAsync(classPath, sb.ToString());
             }
         }
@@ -279,7 +279,7 @@ namespace SwaggerDownload
 
         public static async Task Export(ProjectSchema project, ApiSchema api)
         {
-            if (project.TypeScript == null) return;
+            if (project.Typescript == null) return;
             await ExportSchemas(project, api);
             await ExportEndpoints(project, api);
 
@@ -287,14 +287,14 @@ namespace SwaggerDownload
             await ScribanFunctions.ExecuteTemplate(
                 Path.Combine(".", "templates", "ts", "ApiClient.ts.scriban"),
                 project, api,
-                Path.Combine(project.TypeScript.Folder, "src", project.TypeScript.ClassName + ".ts"));
+                Path.Combine(project.Typescript.Folder, "src", project.Typescript.ClassName + ".ts"));
             await ScribanFunctions.ExecuteTemplate(
                 Path.Combine(".", "templates", "ts", "index.ts.scriban"),
                 project, api,
-                Path.Combine(project.TypeScript.Folder, "src", "index.ts"));
+                Path.Combine(project.Typescript.Folder, "src", "index.ts"));
 
             // Patch the version number in package.json
-            await StringExtensions.PatchFile(Path.Combine(project.TypeScript.Folder, "package.json"), "\"version\": \"[\\d\\.]+\",",
+            await StringExtensions.PatchFile(Path.Combine(project.Typescript.Folder, "package.json"), "\"version\": \"[\\d\\.]+\",",
                 $"\"version\": \"{api.Semver3}\",");
         }
     }
