@@ -90,6 +90,10 @@ namespace SwaggerDownload
             {
                 var sb = new StringBuilder();
                 sb.AppendLine(FileHeader(project));
+                foreach (var import in GetImports(api, item))
+                {
+                    sb.AppendLine(import);
+                }
                 if (item.Fields != null)
                 {
                     sb.AppendLine();
@@ -207,6 +211,7 @@ namespace SwaggerDownload
 
         private static void AddImport(ApiSchema api, string name, List<string> list)
         {
+            if (string.IsNullOrWhiteSpace(name)) return;
             if (name.EndsWith("FetchResult"))
             {
                 if (!list.Contains("FetchResult"))
@@ -240,6 +245,23 @@ namespace SwaggerDownload
                 }
             }
 
+            return GenerateImportsFromList(types);
+        }
+        
+        
+        private static List<string> GetImports(ApiSchema api, SchemaItem item)
+        {
+            var types = new List<string>();
+            foreach (var field in item?.Fields ?? new List<SchemaField>())
+            {
+                AddImport(api, field?.DataType, types);
+            }
+
+            return GenerateImportsFromList(types);
+        }
+
+        private static List<string> GenerateImportsFromList(List<string> types)
+        {
             // Deduplicate the list and generate import statements
             var imports = new List<string>();
             foreach (var t in types)
@@ -267,6 +289,10 @@ namespace SwaggerDownload
                     case "File":
                     case "boolean":
                     case "array":
+                    case "email":
+                    case "double":
+                    case "float":
+                    case "uri":
                         break;
                     default:
                         imports.Add("import { " + t + " } from \"..\";");
