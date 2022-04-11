@@ -125,7 +125,7 @@ namespace SwaggerDownload
                 sb.AppendLine();
                 sb.AppendLine("using System;");
                 sb.AppendLine();
-                sb.AppendLine($"namespace {project.Csharp.ModuleName}");
+                sb.AppendLine($"namespace {project.Csharp.Namespace}");
                 sb.AppendLine("{");
                 if (item.Fields != null)
                 {
@@ -213,7 +213,7 @@ namespace SwaggerDownload
                 sb.AppendLine("using System.Threading.Tasks;");
                 sb.AppendLine();
                 sb.AppendLine();
-                sb.AppendLine($"namespace {project.Csharp.ModuleName}");
+                sb.AppendLine($"namespace {project.Csharp.Namespace}");
                 sb.AppendLine("{");
                 sb.AppendLine($"    /// <summary>");
                 sb.AppendLine($"    /// API methods related to {cat}");

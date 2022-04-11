@@ -98,6 +98,8 @@ end
     /**
      * Configure this API client to use a JWT bearer token.
      *
+     * {{ project.authentication_help }}
+     *
      * @param token The JWT bearer token to use for this API session
      * @return The API client to use
      */
@@ -110,6 +112,8 @@ end
 
     /**
      * Configures this API client to use an API Key.
+     *
+     * {{ project.authentication_help }}
      *
      * @param apiKey The API key to use for this API session
      * @return The API client to use

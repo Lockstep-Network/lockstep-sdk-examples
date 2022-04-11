@@ -63,6 +63,8 @@ class {{ project.python.class_name }}:
     def with_api_key(self, apiKey: str):
         """Configure this API client to use API Key authentication
         
+        {{ project.authentication_help }}
+        
         Parameters
         ----------
         apiKey : str
@@ -74,6 +76,8 @@ class {{ project.python.class_name }}:
     def with_bearer_token(self, bearerToken: str):
         """Configure this API client to use Bearer Token authentication
         
+        {{ project.authentication_help }}
+
         Parameters
         ----------
         bearerToken : str

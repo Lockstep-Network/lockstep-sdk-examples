@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace SwaggerDownload
 {
-    public static class StringExtensions
+    public static class Extensions
     {
         /// <summary>
         /// camelCase: First character lowercase, all other word segments start with a capital letter
@@ -245,5 +246,12 @@ namespace SwaggerDownload
                 sb.Length--;
             }
         }
+        
+        #nullable enable
+        public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T>? source)
+        {
+            return source ?? Enumerable.Empty<T>();
+        }
+        #nullable disable
     }
 }

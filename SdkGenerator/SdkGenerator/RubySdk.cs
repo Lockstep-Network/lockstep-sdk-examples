@@ -240,16 +240,16 @@ namespace SwaggerDownload
                 Path.Combine(".", "templates", "ruby", "ApiClient.rb.scriban"),
                 project, api,
                 Path.Combine(rubyModulePath, project.Ruby.ClassName.ProperCaseToSnakeCase() + ".rb"));
-            await StringExtensions.PatchFile(Path.Combine(rubyModulePath, "version.rb"),
+            await Extensions.PatchFile(Path.Combine(rubyModulePath, "version.rb"),
                 "VERSION = \"[\\d\\.]+\"",
                 $"VERSION = \"{api.Semver4}\"");
-            await StringExtensions.PatchFile(rubyGemspecPath,
+            await Extensions.PatchFile(rubyGemspecPath,
                 "s.version = '[\\d\\.]+'",
                 $"s.version = '{api.Semver4}'");
-            await StringExtensions.PatchFile(rubyGemspecPath,
+            await Extensions.PatchFile(rubyGemspecPath,
                 "s.date = '[\\d-]+'",
                 $"s.date = '{DateTime.Today:yyyy-MM-dd}'");
-            await StringExtensions.PatchFile(Path.Combine(project.Ruby.Folder, "Gemfile.lock"),
+            await Extensions.PatchFile(Path.Combine(project.Ruby.Folder, "Gemfile.lock"),
                 $"{project.Ruby.ModuleName} \\([\\d\\.]+\\)",
                 $"{project.Ruby.ModuleName} ({api.Semver4})");
         }
