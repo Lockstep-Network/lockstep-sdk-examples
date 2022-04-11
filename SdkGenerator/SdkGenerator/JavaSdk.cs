@@ -375,10 +375,10 @@ namespace SwaggerDownload
                 Path.Combine(project.Java.Folder, "src", "main", "java",
                     project.Java.Namespace.Replace('.', Path.DirectorySeparatorChar),
                     project.Java.ClassName + ".java"));
-            await StringExtensions.PatchFile(Path.Combine(project.Java.Folder, "pom.xml"),
+            await Extensions.PatchFile(Path.Combine(project.Java.Folder, "pom.xml"),
                 $"<artifactId>{project.Java.ModuleName}<\\/artifactId>\\s+<version>[\\d\\.]+<\\/version>",
                 $"<artifactId>{project.Java.ModuleName}</artifactId>\r\n    <version>{api.Semver4}</version>");
-            await StringExtensions.PatchFile(
+            await Extensions.PatchFile(
                 Path.Combine(project.Java.Folder, "src", "main", "java",
                     project.Java.Namespace.Replace('.', Path.DirectorySeparatorChar), "RestRequest.java"),
                 "request.addHeader\\(\"SdkVersion\", \"[\\d\\.]+\"\\);",

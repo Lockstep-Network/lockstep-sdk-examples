@@ -313,7 +313,7 @@ namespace SwaggerDownload
                 Path.Combine(".", "templates", "python", "__init__.py.scriban"),
                 project, api,
                 Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "__init__.py"));
-            await StringExtensions.PatchFile(Path.Combine(project.Python.Folder, "setup.cfg"), "version = [\\d\\.]+",
+            await Extensions.PatchFile(Path.Combine(project.Python.Folder, "setup.cfg"), "version = [\\d\\.]+",
                 $"version = {api.Semver3}");
         }
     }

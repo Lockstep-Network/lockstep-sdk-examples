@@ -252,9 +252,9 @@ namespace SwaggerDownload
         private static List<string> GetImports(ApiSchema api, SchemaItem item)
         {
             var types = new List<string>();
-            foreach (var field in item?.Fields ?? new List<SchemaField>())
+            foreach (var field in (item?.Fields).EmptyIfNull())
             {
-                if (field?.DataType != item.Name)
+                if (field?.DataType != item?.Name)
                 {
                     AddImport(api, field?.DataType, types);
                 }
@@ -323,7 +323,7 @@ namespace SwaggerDownload
                 Path.Combine(project.Typescript.Folder, "src", "index.ts"));
 
             // Patch the version number in package.json
-            await StringExtensions.PatchFile(Path.Combine(project.Typescript.Folder, "package.json"), "\"version\": \"[\\d\\.]+\",",
+            await Extensions.PatchFile(Path.Combine(project.Typescript.Folder, "package.json"), "\"version\": \"[\\d\\.]+\",",
                 $"\"version\": \"{api.Semver3}\",");
         }
     }

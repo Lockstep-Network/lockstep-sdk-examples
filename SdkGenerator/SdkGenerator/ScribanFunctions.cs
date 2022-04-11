@@ -18,7 +18,7 @@ namespace SwaggerDownload
                 var templateText = await File.ReadAllTextAsync(templateName);
                 var template = Template.Parse(templateText);
                 var scriptObject1 = new ScriptObject();
-                scriptObject1.Import(typeof(StringExtensions));
+                scriptObject1.Import(typeof(Extensions));
                 var context = new TemplateContext();
                 context.PushGlobal(scriptObject1);
                 context.SetValue(new ScriptVariableGlobal("api"), api);
