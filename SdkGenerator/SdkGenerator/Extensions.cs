@@ -237,6 +237,10 @@ namespace SwaggerDownload
                 var newText = text.Replace(match.ToString(), replacement);
                 await File.WriteAllTextAsync(filename, newText);
             }
+            else
+            {
+                Console.WriteLine($"Failed to patch file {filename} - no match found.");
+            }
         }
 
         public static void TrimEnd(this StringBuilder sb)
