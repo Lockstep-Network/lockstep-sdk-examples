@@ -34,7 +34,14 @@ namespace LockstepExamples
                         var sync = await BatchSubmitter.UploadToLockstep(o.ServerUrl, o.ApiKey, zipArchiveName);
 
                         // Retrieve results
-                        await BatchSubmitter.WaitForSyncComplete(o.ServerUrl, o.ApiKey, sync.SyncRequestId, 5);
+                        if (sync.SyncRequestId == null)
+                        {
+                            Console.WriteLine("Failed to upload batch");
+                        }
+                        else
+                        {
+                            await BatchSubmitter.WaitForSyncComplete(o.ServerUrl, o.ApiKey, sync.SyncRequestId.Value, 5);
+                        }
                     }
                     finally
                     {
