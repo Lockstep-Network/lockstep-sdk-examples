@@ -21,7 +21,7 @@ require 'socket'
 project_root = File.dirname(File.absolute_path(__FILE__))
 Dir.glob(project_root + '/clients/*') {|file| require file}
 
-module {{ project.ruby.module_name }}
+module {{ project.ruby.namespace }}
     class {{ project.ruby.class_name }}
     
         ##

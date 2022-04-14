@@ -7,12 +7,12 @@ namespace LockstepExamples
     {
         public static async Task Main(string[] args)
         {
-            var client = LockstepApi.WithEnvironment(LockstepEnv.SBX)
+            var client = LockstepApi.WithEnvironment("sbx")
                 .WithApiKey(Environment.GetEnvironmentVariable("LOCKSTEPAPI_SBX"));
 
             // Test first API call
             var result = await client.Status.Ping();
-            if (!result.Success || !result.Value.LoggedIn)
+            if (!result.Success || result.Value.LoggedIn != true)
             {
                 Console.WriteLine("Your API key is not valid.");
                 Console.WriteLine("Please set the environment variable LOCKSTEPAPI_SBX and try again.");

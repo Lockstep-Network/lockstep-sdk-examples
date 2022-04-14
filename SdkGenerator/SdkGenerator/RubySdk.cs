@@ -232,7 +232,7 @@ namespace SwaggerDownload
             await ExportEndpoints(project, api);
             
             // Some paths we'll need
-            var rubyModulePath = Path.Combine(project.Ruby.Folder, "lib", project.Ruby.ModuleName);
+            var rubyModulePath = Path.Combine(project.Ruby.Folder, "lib", project.Ruby.Namespace);
             var rubyGemspecPath = Path.Combine(project.Ruby.Folder, project.Ruby.ModuleName + ".gemspec");
 
             // Let's try using Scriban to populate these files

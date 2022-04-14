@@ -5,21 +5,22 @@ using System.Threading.Tasks;
 using CSVFile;
 using LockstepSDK;
 
-// I would like to see a sample program that shows how to query for invoices with an outstanding balance older than a certain age,
-// then fetch the primary contact person for that invoice, and export the list to CSV
-
-namespace LockstepExamples // Note: actual namespace depends on the project name.
+namespace LockstepExamples
 {
+    /// <summary>
+    /// This program demonstrates how to query for invoices with an outstanding balance older than a certain age,
+    /// then fetch the primary contact person for that invoice, and export the list to CSV. 
+    /// </summary>
     public static class CollectionsReport
     {
         public static async Task Main(string[] args)
         {
-            var client = LockstepApi.WithEnvironment(LockstepEnv.SBX)
+            var client = LockstepApi.WithEnvironment("sbx")
                 .WithApiKey(Environment.GetEnvironmentVariable("LOCKSTEPAPI_SBX"));
 
             // Test first API call
             var result = await client.Status.Ping();
-            if (!result.Success || !result.Value.LoggedIn)
+            if (!result.Success || result.Value.LoggedIn != true)
             {
                 Console.WriteLine("Your API key is not valid.");
                 Console.WriteLine("Please set the environment variable LOCKSTEPAPI_SBX and try again.");
@@ -82,7 +83,7 @@ namespace LockstepExamples // Note: actual namespace depends on the project name
     {
         public Guid? InvoiceId { get; set; }
         public string? InvoiceDate { get; set; }
-        public double? OutstandingBalance { get; set; }
+        public decimal? OutstandingBalance { get; set; }
         public string? PrimaryContact { get; set; }
     }
 }
