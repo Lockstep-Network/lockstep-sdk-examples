@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using JsonDiffPatchDotNet;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using SdkGenerator.Project;
 using SdkGenerator.Schema;
 
 namespace SdkGenerator;

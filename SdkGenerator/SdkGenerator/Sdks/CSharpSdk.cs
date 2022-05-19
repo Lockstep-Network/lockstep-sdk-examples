@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using SdkGenerator.Project;
 using SdkGenerator.Schema;
 
-namespace SdkGenerator;
+namespace SdkGenerator.Sdks;
 
 public static class CSharpSdk
 {

@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Scriban;
 using Scriban.Runtime;
 using Scriban.Syntax;
-using SdkGenerator.Project;
 using SdkGenerator.Schema;
 
 namespace SdkGenerator;

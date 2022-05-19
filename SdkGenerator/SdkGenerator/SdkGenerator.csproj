@@ -42,8 +42,4 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
-
-    <ItemGroup>
-      <Compile Remove="ProjectSchema.cs" />
-    </ItemGroup>
 </Project>
