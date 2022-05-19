@@ -5,10 +5,13 @@ using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using JsonDiffPatchDotNet;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Polly;
+using Polly.Retry;
 using SdkGenerator.Schema;
 
 namespace SdkGenerator;
@@ -16,6 +19,14 @@ namespace SdkGenerator;
 public static class DownloadFile
 {
     private static readonly HttpClient HttpClient = new();
+
+    private static readonly AsyncRetryPolicy HttpRetryPolicy = Policy.Handle<HttpRequestException>()
+        .WaitAndRetryAsync(new[]
+        {
+            TimeSpan.FromSeconds(1),
+            TimeSpan.FromSeconds(2),
+            TimeSpan.FromSeconds(4)
+        });
 
     /// <summary>
     /// Download the swagger file
@@ -63,7 +74,8 @@ public static class DownloadFile
         // Attempt to retrieve this page and scan for the version number
         try
         {
-            var contents = await HttpClient.GetStringAsync(project.VersionNumberUrl);
+            var contents = await HttpRetryPolicy.ExecuteAsync(async ct =>
+                await HttpClient.GetStringAsync(project.VersionNumberUrl, ct), CancellationToken.None);
             var r = new Regex(project.VersionNumberRegex);
             var match = r.Match(contents);
             if (match.Success)
@@ -159,47 +171,47 @@ public static class DownloadFile
     /// <param name="version2">The short version number (year.week)</param>
     /// <param name="version3">The short version number (year.week)</param>
     /// <param name="version4">The full version number (year.week.build)</param>
-    private static ApiSchema GatherSchemas(ProjectSchema project, string swaggerJson, string version2, string version3, string version4)
+    private static ApiSchema GatherSchemas(ProjectSchema project, string swaggerJson, string version2, string version3,
+        string version4)
     {
         // Gather schemas from the file
-        using (var doc = JsonDocument.Parse(swaggerJson))
+        using var doc = JsonDocument.Parse(swaggerJson);
+
+        // Collect all the schemas / data models
+        var schemaList = new List<SchemaItem>();
+        var components = doc.RootElement.GetProperty("components");
+        var schemas = components.GetProperty("schemas");
+        foreach (var schema in schemas.EnumerateObject())
         {
-            // Collect all the schemas / data models
-            var schemaList = new List<SchemaItem>();
-            var components = doc.RootElement.GetProperty("components");
-            var schemas = components.GetProperty("schemas");
-            foreach (var schema in schemas.EnumerateObject())
+            var item = SchemaFactory.MakeSchema(schema);
+            if (item != null)
             {
-                var item = SchemaFactory.MakeSchema(schema);
-                if (item != null)
-                {
-                    schemaList.Add(item);
-                }
+                schemaList.Add(item);
             }
-
-            // Collect all the APIs
-            var endpointList = new List<EndpointItem>();
-            var paths = doc.RootElement.GetProperty("paths");
-            foreach (var endpoint in paths.EnumerateObject())
-            {
-                var item = SchemaFactory.MakeEndpoint(endpoint);
-                if (item != null)
-                {
-                    endpointList.AddRange(item);
-                }
-            }
-
-            // Convert into an API schema
-            return new ApiSchema
-            {
-                Semver2 = version2,
-                Semver3 = version3,
-                Semver4 = version4,
-                Schemas = schemaList,
-                Endpoints = endpointList,
-                Categories = (from e in endpointList where !e.Deprecated orderby e.Category select e.Category).Distinct().ToList()
-            };
         }
+
+        // Collect all the APIs
+        var endpointList = new List<EndpointItem>();
+        var paths = doc.RootElement.GetProperty("paths");
+        foreach (var endpoint in paths.EnumerateObject())
+        {
+            var item = SchemaFactory.MakeEndpoint(endpoint);
+            if (item != null)
+            {
+                endpointList.AddRange(item);
+            }
+        }
+
+        // Convert into an API schema
+        return new ApiSchema
+        {
+            Semver2 = version2,
+            Semver3 = version3,
+            Semver4 = version4,
+            Schemas = schemaList,
+            Endpoints = endpointList,
+            Categories = (from e in endpointList where !e.Deprecated orderby e.Category select e.Category).Distinct().ToList()
+        };
     }
 
     public static async Task<ApiSchema> GenerateApi(ProjectSchema project)
