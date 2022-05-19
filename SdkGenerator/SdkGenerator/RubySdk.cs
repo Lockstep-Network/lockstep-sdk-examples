@@ -53,7 +53,7 @@ public static class RubySdk
                         $"            @{f.Name.ProperCaseToSnakeCase()} = params.dig(:{f.Name.ProperCaseToSnakeCase()})");
                 }
 
-                sb.AppendLine($"        end");
+                sb.AppendLine("        end");
                 sb.AppendLine();
                 foreach (var f in item.Fields)
                 {
@@ -65,7 +65,7 @@ public static class RubySdk
                 }
 
                 sb.AppendLine("        ##");
-                sb.AppendLine($"        # @return [object] This object as a JSON key-value structure");
+                sb.AppendLine("        # @return [object] This object as a JSON key-value structure");
                 sb.AppendLine("        def as_json(options={})");
                 sb.AppendLine("            {");
                 foreach (var f in item.Fields)
@@ -77,7 +77,7 @@ public static class RubySdk
                 sb.AppendLine("        end");
                 sb.AppendLine();
                 sb.AppendLine("        ##");
-                sb.AppendLine($"        # @return [String] This object converted to a JSON string");
+                sb.AppendLine("        # @return [String] This object converted to a JSON string");
                 sb.AppendLine("        def to_json(*options)");
                 sb.AppendLine("            \"[#{as_json(*options).to_json(*options)}]\"");
                 sb.AppendLine("        end");
@@ -106,9 +106,9 @@ public static class RubySdk
             sb.AppendLine("    ##");
             sb.AppendLine($"    # Initialize the {cat.ToProperCase()}Client class with an API client instance.");
             sb.AppendLine($"    # @param connection [{project.Ruby.ClassName}] The API client object for this connection");
-            sb.AppendLine($"    def initialize(connection)");
-            sb.AppendLine($"        @connection = connection");
-            sb.AppendLine($"    end");
+            sb.AppendLine("    def initialize(connection)");
+            sb.AppendLine("        @connection = connection");
+            sb.AppendLine("    end");
             sb.AppendLine();
 
             // Run through all APIs
@@ -120,18 +120,22 @@ public static class RubySdk
                 // Figure out the parameter list
                 var body = (from p in endpoint.Parameters where p.Location == "body" select p).FirstOrDefault();
                 var hasBody = body != null;
-                var bodyParamStr = (hasBody ? (body.DataType == "object" ? "body.to_camelback_keys.to_json" : "body") : "nil");
+                var bodyParamStr = hasBody ? body.DataType == "object" ? "body.to_camelback_keys.to_json" : "body" : "nil";
                 var hasQueryParams = (from p in endpoint.Parameters where p.Location == "query" select p).Any();
-                var paramListStr = String.Join(", ", from p in endpoint.Parameters select $"{FixupVariableName(p.Name)}:");
+                var paramListStr = string.Join(", ", from p in endpoint.Parameters select $"{FixupVariableName(p.Name)}:");
 
                 // Write the method
                 sb.AppendLine($"    def {endpoint.Name.ToSnakeCase()}({paramListStr})");
                 sb.AppendLine($"        path = \"{endpoint.Path.Replace("{", "#{")}\"");
                 if (hasQueryParams)
                 {
-                    var paramObjStr = string.Join(", ", from p in endpoint.Parameters where p.Location == "query" select $":{p.Name} => {FixupVariableName(p.Name)}");
+                    var paramObjStr = string.Join(", ",
+                        from p in endpoint.Parameters
+                        where p.Location == "query"
+                        select $":{p.Name} => {FixupVariableName(p.Name)}");
                     sb.AppendLine($"        params = {{{paramObjStr}}}");
                 }
+
                 sb.AppendLine($"        @connection.request(:{endpoint.Method.ToLower()}, path, {bodyParamStr}, {(hasQueryParams ? "params" : "nil")})");
                 sb.AppendLine("    end");
             }
@@ -228,10 +232,14 @@ public static class RubySdk
 
     public static async Task Export(ProjectSchema project, ApiSchema api)
     {
-        if (project.Ruby == null) return;
+        if (project.Ruby == null)
+        {
+            return;
+        }
+
         await ExportSchemas(project, api);
         await ExportEndpoints(project, api);
-            
+
         // Some paths we'll need
         var rubyModulePath = Path.Combine(project.Ruby.Folder, "lib", project.Ruby.Namespace);
         var rubyGemspecPath = Path.Combine(project.Ruby.Folder, project.Ruby.ModuleName + ".gemspec");

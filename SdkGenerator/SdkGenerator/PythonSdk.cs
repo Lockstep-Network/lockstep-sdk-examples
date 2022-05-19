@@ -27,7 +27,6 @@ public static class PythonSdk
                + "#\n\n";
     }
 
-
     private static string FixupType(ApiSchema api, string typeName, bool isArray)
     {
         var s = typeName;
@@ -35,6 +34,7 @@ public static class PythonSdk
         {
             s = api.FindSchema(typeName).EnumType;
         }
+
         switch (s)
         {
             case "uuid":
@@ -68,10 +68,12 @@ public static class PythonSdk
                 s = "Response";
                 break;
         }
+
         if (isArray)
         {
             s = "list[" + s + "]";
         }
+
         if (s.EndsWith("FetchResult"))
         {
             s = $"FetchResult[{s[..^11]}]";
@@ -140,6 +142,7 @@ public static class PythonSdk
             {
                 sb.AppendLine(import);
             }
+
             sb.AppendLine();
             sb.AppendLine($"class {cat}Client:");
             sb.AppendLine("    \"\"\"");
@@ -172,8 +175,8 @@ public static class PythonSdk
 
                     // Figure out the parameter list
                     var hasBody = (from p in endpoint.Parameters where p.Location == "body" select p).Any();
-                    var paramListStr = String.Join(", ", from p in endpoint.Parameters select $"{p.Name}: {FixupType(api, p.DataType, p.IsArray)}");
-                    var bodyJson = String.Join(", ", from p in endpoint.Parameters where p.Location == "query" select $"\"{p.Name}\": {p.Name}");
+                    var paramListStr = string.Join(", ", from p in endpoint.Parameters select $"{p.Name}: {FixupType(api, p.DataType, p.IsArray)}");
+                    var bodyJson = string.Join(", ", from p in endpoint.Parameters where p.Location == "query" select $"\"{p.Name}\": {p.Name}");
                     var fileUploadParam = (from p in endpoint.Parameters where p.Location == "form" select p).FirstOrDefault();
 
                     // Write the method
@@ -222,7 +225,7 @@ public static class PythonSdk
                 // The return type of a file download has special rules
                 if (endpoint.ReturnDataType.DataType is "File" or "byte[]" or "binary")
                 {
-                    imports.Add($"from requests.models import Response");
+                    imports.Add("from requests.models import Response");
                 }
                 else
                 {
@@ -294,6 +297,7 @@ public static class PythonSdk
                 sb.AppendLine(p.DescriptionMarkdown.WrapMarkdown(72, $"{prefix}    "));
             }
         }
+
         sb.AppendLine($"{prefix}\"\"\"");
 
         return sb.ToString();
@@ -301,7 +305,11 @@ public static class PythonSdk
 
     public static async Task Export(ProjectSchema project, ApiSchema api)
     {
-        if (project.Python == null) return;
+        if (project.Python == null)
+        {
+            return;
+        }
+
         await ExportSchemas(project, api);
         await ExportEndpoints(project, api);
 

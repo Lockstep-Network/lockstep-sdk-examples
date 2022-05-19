@@ -7,6 +7,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using JsonDiffPatchDotNet;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using SdkGenerator.Project;
 using SdkGenerator.Schema;
@@ -15,23 +16,22 @@ namespace SdkGenerator;
 
 public static class DownloadFile
 {
+    private static readonly HttpClient HttpClient = new();
+
     /// <summary>
     /// Download the swagger file
     /// </summary>
-    /// <param name="environment"></param>
+    /// <param name="project"></param>
     /// <param name="semver2"></param>
     /// <returns></returns>
     private static async Task<string> DownloadSwagger(ProjectSchema project, string semver2)
     {
-        using (var client = new HttpClient())
-        {
-            // Downloads json as a string to compare
-            var response = await client.GetAsync(project.SwaggerUrl);
-            var json = await response.Content.ReadAsStringAsync();
+        // Downloads json as a string to compare
+        var response = await HttpClient.GetAsync(project.SwaggerUrl);
+        var json = await response.Content.ReadAsStringAsync();
 
-            // Cleanup the JSON text
-            return FixupSwagger(project, json, semver2);
-        }
+        // Cleanup the JSON text
+        return FixupSwagger(project, json, semver2);
     }
 
     /// <summary>
@@ -60,12 +60,11 @@ public static class DownloadFile
         {
             return "1.0.0.0";
         }
-            
+
         // Attempt to retrieve this page and scan for the version number
         try
         {
-            var client = new HttpClient();
-            var contents = await client.GetStringAsync(project.VersionNumberUrl);
+            var contents = await HttpClient.GetStringAsync(project.VersionNumberUrl);
             var r = new Regex(project.VersionNumberRegex);
             var match = r.Match(contents);
             if (match.Success)
@@ -77,6 +76,7 @@ public static class DownloadFile
         {
             Console.WriteLine($"Failed to load {project.VersionNumberUrl}: {ex.Message}");
         }
+
         return "1.0.0.0";
     }
 
@@ -147,7 +147,7 @@ public static class DownloadFile
         }
 
         // Return it back into a string, and rename the security methods to comply with Readme's new naming policy
-        return Newtonsoft.Json.JsonConvert.SerializeObject(jObject, Newtonsoft.Json.Formatting.Indented)
+        return JsonConvert.SerializeObject(jObject, Formatting.Indented)
             .Replace("\"Bearer Token\": ", "\"bearer_token\": ")
             .Replace("\"API Key\": ", "\"api_key\": ");
     }
@@ -191,7 +191,7 @@ public static class DownloadFile
             }
 
             // Convert into an API schema
-            return new ApiSchema()
+            return new ApiSchema
             {
                 Semver2 = version2,
                 Semver3 = version3,
@@ -212,6 +212,7 @@ public static class DownloadFile
         {
             return null;
         }
+
         var segments = version4.Split(".");
         var version2 = $"{segments[0]}.{segments[1]}";
         var version3 = $"{segments[0]}.{segments[1]}.{segments[2]}";

@@ -159,7 +159,7 @@ public static class TypescriptSdk
                     sb.Append(endpoint.DescriptionMarkdown.ToJavaDoc(2, null, endpoint.Parameters));
 
                     // Figure out the parameter list. For parameters, we'll use ? to indicate nullability.
-                    var paramListStr = String.Join(", ", from p in endpoint.Parameters
+                    var paramListStr = string.Join(", ", from p in endpoint.Parameters
                         orderby p.Required descending
                         select
                             $"{p.Name}{(p.Required ? "" : "?")}: {FixupType(api, p.DataType, p.IsArray, false)}");
@@ -173,7 +173,7 @@ public static class TypescriptSdk
                     var isFileUpload = (from p in endpoint.Parameters where p.Location == "form" select p).Any();
 
                     // Are we using the blob method?
-                    var requestMethod = (returnType == "Blob") ? "requestBlob" : $"request<{returnType}>";
+                    var requestMethod = returnType == "Blob" ? "requestBlob" : $"request<{returnType}>";
                     if (isFileUpload)
                     {
                         requestMethod = "fileUpload";
@@ -197,8 +197,8 @@ public static class TypescriptSdk
                     }
 
                     var hasBody = (from p in endpoint.Parameters where p.Location == "body" select p).Any();
-                    var optionsStr = (options.Count > 0 ? ", options" : ", null");
-                    var bodyStr = (isFileUpload ? ", filename" : (hasBody ? ", body" : ", null"));
+                    var optionsStr = options.Count > 0 ? ", options" : ", null";
+                    var bodyStr = isFileUpload ? ", filename" : hasBody ? ", body" : ", null";
                     sb.AppendLine(
                         $"    return this.client.{requestMethod}(\"{endpoint.Method}\", url{optionsStr}{bodyStr});");
                     sb.AppendLine("  }");
@@ -216,7 +216,11 @@ public static class TypescriptSdk
 
     private static void AddImport(ApiSchema api, string name, List<string> list)
     {
-        if (string.IsNullOrWhiteSpace(name)) return;
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return;
+        }
+
         if (name.EndsWith("FetchResult"))
         {
             if (!list.Contains("FetchResult"))
@@ -310,7 +314,11 @@ public static class TypescriptSdk
 
     public static async Task Export(ProjectSchema project, ApiSchema api)
     {
-        if (project.Typescript == null) return;
+        if (project.Typescript == null)
+        {
+            return;
+        }
+
         await ExportSchemas(project, api);
         await ExportEndpoints(project, api);
 

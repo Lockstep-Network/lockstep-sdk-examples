@@ -33,7 +33,7 @@ public static class CSharpSdk
     {
         if (typeName.EndsWith('?'))
         {
-            typeName =  typeName[..^1];
+            typeName = typeName[..^1];
         }
 
         // Only reference types need to be made nullable
@@ -58,6 +58,7 @@ public static class CSharpSdk
         {
             return typeName[..^1];
         }
+
         return typeName;
     }
 
@@ -68,6 +69,7 @@ public static class CSharpSdk
         {
             s = api.FindSchema(typeName).EnumType;
         }
+
         switch (s)
         {
             case "integer":
@@ -102,6 +104,7 @@ public static class CSharpSdk
                 s = "Guid";
                 break;
         }
+
         if (isArray)
         {
             s += "[]";
@@ -155,6 +158,7 @@ public static class CSharpSdk
 
                 sb.AppendLine("    }");
             }
+
             sb.AppendLine("}");
             var modelPath = Path.Combine(project.Csharp.Folder, "src", "models", item.Name + ".cs");
             await File.WriteAllTextAsync(modelPath, sb.ToString());
@@ -215,16 +219,16 @@ public static class CSharpSdk
             sb.AppendLine();
             sb.AppendLine($"namespace {project.Csharp.Namespace}");
             sb.AppendLine("{");
-            sb.AppendLine($"    /// <summary>");
+            sb.AppendLine("    /// <summary>");
             sb.AppendLine($"    /// API methods related to {cat}");
-            sb.AppendLine($"    /// </summary>");
+            sb.AppendLine("    /// </summary>");
             sb.AppendLine($"    public class {cat}Client");
             sb.AppendLine("    {");
             sb.AppendLine($"        private readonly {project.Csharp.ClassName} _client;");
             sb.AppendLine();
-            sb.AppendLine($"        /// <summary>");
-            sb.AppendLine($"        /// Constructor");
-            sb.AppendLine($"        /// </summary>");
+            sb.AppendLine("        /// <summary>");
+            sb.AppendLine("        /// Constructor");
+            sb.AppendLine("        /// </summary>");
             sb.AppendLine($"        public {cat}Client({project.Csharp.ClassName} client) {{");
             sb.AppendLine("            _client = client;");
             sb.AppendLine("        }");
@@ -239,7 +243,7 @@ public static class CSharpSdk
 
                     // Figure out the parameter list
                     var paramList = new List<string>();
-                    foreach (var p in (from p in endpoint.Parameters orderby p.Required descending select p))
+                    foreach (var p in from p in endpoint.Parameters orderby p.Required descending select p)
                     {
                         var isNullable = !p.Required || p.Nullable;
                         var typeName = FixupType(api, p.DataType, p.IsArray, isNullable);
@@ -307,7 +311,11 @@ public static class CSharpSdk
 
     public static async Task Export(ProjectSchema project, ApiSchema api)
     {
-        if (project.Csharp == null) return;
+        if (project.Csharp == null)
+        {
+            return;
+        }
+
         await ExportSchemas(project, api);
         await ExportEndpoints(project, api);
 

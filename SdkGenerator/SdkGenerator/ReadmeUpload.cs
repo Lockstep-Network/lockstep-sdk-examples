@@ -35,9 +35,7 @@ public static class ReadmeUpload
                 }
             }
         }
-
     }
-
 
     /// <summary>
     /// This is the older table-style data definition.  It was harder to read when the description of each field
@@ -59,7 +57,7 @@ public static class ReadmeUpload
         }
 
         // Provide definitions for all the fields
-        sb.AppendLine($"# Fields");
+        sb.AppendLine("# Fields");
         sb.AppendLine("| Field | Type | Notes |");
         sb.AppendLine("|--|--|--|");
         foreach (var field in item.Fields)
@@ -83,7 +81,8 @@ public static class ReadmeUpload
             if (field.MaxLength.HasValue && field.MinLength.HasValue)
             {
                 modifiers += $"(between {field.MinLength} and {field.MaxLength} characters) ";
-            } else if (field.MinLength.HasValue)
+            }
+            else if (field.MinLength.HasValue)
             {
                 modifiers += $"(minimum {field.MinLength} characters) ";
             }
@@ -165,7 +164,7 @@ public static class ReadmeUpload
         // Read-only fields first
         if (readOnlyFields.Count > 0)
         {
-            sb.AppendLine($"## Read-Only Fields");
+            sb.AppendLine("## Read-Only Fields");
             sb.AppendLine("These fields are assigned by the API server and cannot be changed.");
             foreach (var field in readOnlyFields)
             {
@@ -176,7 +175,7 @@ public static class ReadmeUpload
         // Required fields first
         if (requiredFields.Count > 0)
         {
-            sb.AppendLine($"## Required Fields");
+            sb.AppendLine("## Required Fields");
             foreach (var field in requiredFields)
             {
                 sb.AppendLine(FieldMarkdown(field));
@@ -186,7 +185,7 @@ public static class ReadmeUpload
         // Optional fields second
         if (optionalFields.Count > 0)
         {
-            sb.AppendLine($"## Optional Fields");
+            sb.AppendLine("## Optional Fields");
             foreach (var field in optionalFields)
             {
                 sb.AppendLine(FieldMarkdown(field));
@@ -196,7 +195,7 @@ public static class ReadmeUpload
         // Collections fields second
         if (collectionFields.Count > 0)
         {
-            sb.AppendLine($"## Included Collections");
+            sb.AppendLine("## Included Collections");
             sb.AppendLine("These fields are available when using Retrieve or Query API calls if you specify the " +
                           "associated `Include` parameter.");
             foreach (var field in collectionFields)
@@ -260,7 +259,7 @@ public static class ReadmeUpload
         sb.AppendLine();
         if (modifiers.Count > 0)
         {
-            sb.AppendLine($"_{String.Join(", ", modifiers)}_");
+            sb.AppendLine($"_{string.Join(", ", modifiers)}_");
             sb.AppendLine();
         }
 
@@ -271,7 +270,7 @@ public static class ReadmeUpload
 
     private static async Task<IRestResponse> CallReadme(string argReadmeKey, string resource, Method method, string body = null)
     {
-        var client = new RestClient($"https://dash.readme.com");
+        var client = new RestClient("https://dash.readme.com");
         var request = new RestRequest(resource, method);
         request.AddHeader("Accept", "application/json");
         request.AddHeader("Authorization", $"Basic {argReadmeKey}");
@@ -280,6 +279,7 @@ public static class ReadmeUpload
             request.AddHeader("Content-Type", "application/json");
             request.AddParameter("application/json", body, ParameterType.RequestBody);
         }
+
         return await client.ExecuteAsync(request);
     }
 
@@ -295,7 +295,7 @@ public static class ReadmeUpload
     private static async Task UploadToReadme(string argReadmeKey, string schemaName, int order, string markdown)
     {
         var docName = $"/api/v1/docs/{schemaName.ToLower()}";
-        var doc = new ReadmeDocModel()
+        var doc = new ReadmeDocModel
         {
             hidden = false,
             order = order,
@@ -317,5 +317,4 @@ public static class ReadmeUpload
             Console.WriteLine($"Created {schemaName}: {result.StatusCode}");
         }
     }
-
 }

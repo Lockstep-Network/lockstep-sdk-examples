@@ -68,7 +68,7 @@ public class ApiSchema
     public string Semver3 { get; set; }
     public string Semver4 { get; set; }
     public List<EndpointItem> Endpoints { get; set; }
-    public List<String> Categories { get; set; }
+    public List<string> Categories { get; set; }
     public List<SchemaItem> Schemas { get; set; }
 
     public SchemaItem FindSchema(string typeName)

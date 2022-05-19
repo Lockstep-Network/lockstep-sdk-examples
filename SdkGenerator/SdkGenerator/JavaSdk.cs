@@ -142,12 +142,12 @@ public static class JavaSdk
                             $"    public {FixupType(api, field.DataType, field.IsArray, field.Nullable)} get{field.Name.ToProperCase()}() {{ return this.{field.Name.ToCamelCase()}; }}");
 
                         // For whatever reason, Java wants the field description to be the "value" param of the setter
-                        ParameterField pf = new ParameterField()
+                        var pf = new ParameterField
                         {
                             Name = "value",
                             DescriptionMarkdown = "The new value for " + field.Name
                         };
-                        sb.Append(field.DescriptionMarkdown.ToJavaDoc(4, null, new List<ParameterField>() { pf }));
+                        sb.Append(field.DescriptionMarkdown.ToJavaDoc(4, null, new List<ParameterField> { pf }));
                         sb.AppendLine(
                             $"    public void set{field.Name.ToProperCase()}({FixupType(api, field.DataType, field.IsArray, field.Nullable)} value) {{ this.{field.Name.ToCamelCase()} = value; }}");
                     }
@@ -234,7 +234,7 @@ public static class JavaSdk
                         switch (o.Location)
                         {
                             case "body":
-                                sb.AppendLine($"        r.AddBody(body);");
+                                sb.AppendLine("        r.AddBody(body);");
                                 break;
                             case "query":
                                 sb.AppendLine($"        r.AddQuery(\"{o.Name}\", {o.Name}.toString());");
@@ -256,7 +256,7 @@ public static class JavaSdk
                     }
                     else if (returnType == "byte[]")
                     {
-                        sb.AppendLine($"        return r.Call();");
+                        sb.AppendLine("        return r.Call();");
                     }
                     else
                     {
@@ -361,7 +361,11 @@ public static class JavaSdk
 
     public static async Task Export(ProjectSchema project, ApiSchema api)
     {
-        if (project.Java == null) return;
+        if (project.Java == null)
+        {
+            return;
+        }
+
         await ExportSchemas(project, api);
         await ExportEndpoints(project, api);
 

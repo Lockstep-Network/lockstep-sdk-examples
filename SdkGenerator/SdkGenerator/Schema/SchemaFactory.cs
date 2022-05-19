@@ -7,7 +7,6 @@ namespace SdkGenerator.Schema;
 
 public static class SchemaFactory
 {
-
     public static SchemaItem MakeSchema(JsonProperty jsonSchema)
     {
         if (jsonSchema.Value.TryGetProperty("properties", out var schemaPropertiesElement))
@@ -91,6 +90,7 @@ public static class SchemaFactory
                 return element.GetInt32();
             }
         }
+
         return null;
     }
 
@@ -110,6 +110,7 @@ public static class SchemaFactory
         {
             return prop.GetString() ?? "";
         }
+
         Console.WriteLine($"Missing {name} on element: {element}");
         return "";
     }
@@ -131,6 +132,7 @@ public static class SchemaFactory
                         return innerSchemaRef;
                     }
                 }
+
                 return null;
             }
 
@@ -140,7 +142,7 @@ public static class SchemaFactory
                 rawType = formatProp.GetString();
             }
 
-            return new SchemaRef()
+            return new SchemaRef
             {
                 DataType = rawType
             };
@@ -172,7 +174,7 @@ public static class SchemaFactory
         }
 
         Console.WriteLine($"Missing type: {prop}");
-        return new SchemaRef()
+        return new SchemaRef
         {
             DataType = "object",
         };
@@ -181,7 +183,7 @@ public static class SchemaFactory
     private static SchemaRef MakeClassRef(string refType, bool isArray)
     {
         var classname = refType.Substring(refType.LastIndexOf("/", StringComparison.Ordinal) + 1);
-        return new SchemaRef()
+        return new SchemaRef
         {
             DataType = classname,
             DataTypeRef = $"/docs/{classname.ToLower()}",
@@ -193,7 +195,7 @@ public static class SchemaFactory
     {
         var items = new List<EndpointItem>();
         var path = prop.Name;
-        foreach (var endpointProp  in prop.Value.EnumerateObject())
+        foreach (var endpointProp in prop.Value.EnumerateObject())
         {
             var item = new EndpointItem
             {
@@ -207,11 +209,13 @@ public static class SchemaFactory
 
             // Determine category
             endpointProp.Value.TryGetProperty("tags", out var tags);
-            item.Category = tags.ValueKind == JsonValueKind.Array ? tags.EnumerateArray().FirstOrDefault().GetString() : "Utility";
+            item.Category = tags.ValueKind == JsonValueKind.Array
+                ? tags.EnumerateArray().FirstOrDefault().GetString()
+                : "Utility";
 
             // Determine if deprecated
             endpointProp.Value.TryGetProperty("deprecated", out var deprecatedProp);
-            item.Deprecated = (deprecatedProp.ValueKind == JsonValueKind.True);
+            item.Deprecated = deprecatedProp.ValueKind == JsonValueKind.True;
 
             // Parse parameters
             endpointProp.Value.TryGetProperty("parameters", out var parameterListProp);
@@ -252,7 +256,7 @@ public static class SchemaFactory
                 {
                     if (encodingProp.Name == "application/json")
                     {
-                        var p = new ParameterField()
+                        var p = new ParameterField
                         {
                             Name = "body",
                             Location = "body",
@@ -273,7 +277,7 @@ public static class SchemaFactory
                     }
                     else if (encodingProp.Name == "multipart/form-data")
                     {
-                        item.Parameters.Add(new ParameterField()
+                        item.Parameters.Add(new ParameterField
                         {
                             Name = "filename",
                             Location = "form",

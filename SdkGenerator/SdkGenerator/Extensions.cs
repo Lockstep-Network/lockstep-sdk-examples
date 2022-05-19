@@ -71,6 +71,7 @@ public static class Extensions
             {
                 withinWordSegment = false;
             }
+
             sb.Append(char.ToLower(c));
         }
 
@@ -100,7 +101,7 @@ public static class Extensions
 
         // Break markdown into something readable
         var lastLineBlank = false;
-        if (!String.IsNullOrWhiteSpace(markdown))
+        if (!string.IsNullOrWhiteSpace(markdown))
         {
             foreach (var line in markdown.Replace(" & ", " and ").Split("\n"))
             {
@@ -116,6 +117,7 @@ public static class Extensions
                     {
                         sb.AppendLine(nextLine);
                     }
+
                     lastLineBlank = true;
                 }
                 else
@@ -145,7 +147,7 @@ public static class Extensions
         }
 
         // Do they want to describe a return type?
-        if (!String.IsNullOrWhiteSpace(returnType))
+        if (!string.IsNullOrWhiteSpace(returnType))
         {
             sb.AppendLine($"{prefix} * @return {returnType.ToSingleLineMarkdown()}".TrimEnd());
         }
@@ -184,7 +186,8 @@ public static class Extensions
         var sb = new StringBuilder();
         sb.Append(prefix);
         var position = prefix.Length;
-        foreach (var word in words) {
+        foreach (var word in words)
+        {
             if (word == token)
             {
                 sb.TrimEnd();
@@ -198,7 +201,7 @@ public static class Extensions
             // when we reach the halfway point of a line.  This often happens when we
             // have some markdown text, like a URL, which is nearly or greater than 70
             // characters by itself.
-            else if ((position > maxCharactersPerLine / 2) && (position + word.Length > maxCharactersPerLine))
+            else if (position > maxCharactersPerLine / 2 && position + word.Length > maxCharactersPerLine)
             {
                 sb.TrimEnd();
                 sb.AppendLine();
@@ -206,7 +209,9 @@ public static class Extensions
                 sb.Append(word);
                 sb.Append(" ");
                 position = prefix.Length + word.Length + 1;
-            } else {
+            }
+            else
+            {
                 sb.Append(word);
                 sb.Append(" ");
                 position += word.Length + 1;
@@ -231,6 +236,7 @@ public static class Extensions
             Console.WriteLine($"Unable to find file {filename}");
             return;
         }
+
         var text = await File.ReadAllTextAsync(filename);
         var match = Regex.Match(text, regex);
         if (match.Success)
@@ -251,7 +257,7 @@ public static class Extensions
             sb.Length--;
         }
     }
-        
+
 #nullable enable
     public static IEnumerable<T> EmptyIfNull<T>(this IEnumerable<T>? source)
     {
