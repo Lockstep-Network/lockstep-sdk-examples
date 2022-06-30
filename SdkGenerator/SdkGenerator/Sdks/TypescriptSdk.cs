@@ -20,7 +20,7 @@ public static class TypescriptSdk
                + " * For the full copyright and license information, please view the LICENSE\n"
                + " * file that was distributed with this source code.\n"
                + " *\n"
-               + $" * @author     {project.AuthorName} <{project.AuthorEmail}\n"
+               + $" * @author     {project.AuthorName} <{project.AuthorEmail}>\n"
                + $" * @copyright  {project.ProjectStartYear}-{DateTime.UtcNow.Year} {project.CopyrightHolder}\n"
                + $" * @link       {project.Typescript.GithubUrl}\n"
                + " */\n";
@@ -88,6 +88,12 @@ public static class TypescriptSdk
 
     private static async Task ExportSchemas(ProjectSchema project, ApiSchema api)
     {
+        var modelsDir = Path.Combine(project.Typescript.Folder, "src", "models");
+        foreach (var modelFile in Directory.EnumerateFiles(modelsDir, "*.ts"))
+        {
+            File.Delete(modelFile);
+        }
+
         foreach (var item in api.Schemas)
         {
             var sb = new StringBuilder();
@@ -116,13 +122,19 @@ public static class TypescriptSdk
                 sb.AppendLine("};");
             }
 
-            var modelPath = Path.Combine(project.Typescript.Folder, "src", "models", item.Name + ".ts");
+            var modelPath = Path.Combine(modelsDir, item.Name + ".ts");
             await File.WriteAllTextAsync(modelPath, sb.ToString());
         }
     }
 
     private static async Task ExportEndpoints(ProjectSchema project, ApiSchema api)
     {
+        var clientsDir = Path.Combine(project.Typescript.Folder, "src", "clients");
+        foreach (var clientsFile in Directory.EnumerateFiles(clientsDir, "*.ts"))
+        {
+            File.Delete(clientsFile);
+        }
+
         // Gather a list of unique categories
         var categories = (from e in api.Endpoints where !e.Deprecated select e.Category).Distinct().ToList();
         foreach (var cat in categories)
@@ -208,7 +220,7 @@ public static class TypescriptSdk
             sb.AppendLine("}");
 
             // Write this category to a file
-            var classPath = Path.Combine(project.Typescript.Folder, "src", "clients", $"{cat}Client.ts");
+            var classPath = Path.Combine(clientsDir, $"{cat}Client.ts");
             await File.WriteAllTextAsync(classPath, sb.ToString());
         }
     }

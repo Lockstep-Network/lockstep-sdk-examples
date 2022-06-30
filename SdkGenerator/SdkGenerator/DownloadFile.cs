@@ -120,6 +120,9 @@ public static class DownloadFile
             jObject.Add("servers", servers);
         }
 
+        // Remove OAuth2 security definition - it's just for Swagger UI
+        jObject["components"]!["securitySchemes"]!["OAuth2"]!.Parent!.Remove();
+
         // Add links to the document data definitions
         if (project.Readme != null)
         {
@@ -190,6 +193,50 @@ public static class DownloadFile
             }
         }
 
+        schemaList.Add(new()
+        {
+            Name = "ErrorResult",
+            DescriptionMarkdown = "Represents a failed API request.",
+            Fields = new()
+            {
+                new()
+                {
+                    Name = "type",
+                    DescriptionMarkdown = "A description of the type of error that occurred.",
+                    DataType = "string",
+                    Nullable = false,
+                },
+                new()
+                {
+                    Name = "title",
+                    DescriptionMarkdown = "A short title describing the error.",
+                    DataType = "string",
+                    Nullable = false,
+                },
+                new()
+                {
+                    Name = "status",
+                    DescriptionMarkdown = "If an error code is applicable, this contains an error number.",
+                    DataType = "int32",
+                    Nullable = false,
+                },
+                new()
+                {
+                    Name = "detail",
+                    DescriptionMarkdown = "If detailed information about this error is available, this value contains more information.",
+                    DataType = "string",
+                    Nullable = false,
+                },
+                new()
+                {
+                    Name = "instance",
+                    DescriptionMarkdown = "If this error corresponds to a specific instance or object, this field indicates which one.",
+                    DataType = "string",
+                    Nullable = false,
+                }
+            },
+        });
+
         // Collect all the APIs
         var endpointList = new List<EndpointItem>();
         var paths = doc.RootElement.GetProperty("paths");
@@ -208,7 +255,7 @@ public static class DownloadFile
             Semver2 = version2,
             Semver3 = version3,
             Semver4 = version4,
-            Schemas = schemaList,
+            Schemas = schemaList.OrderBy(s => s.Name).ToList(),
             Endpoints = endpointList,
             Categories = (from e in endpointList where !e.Deprecated orderby e.Category select e.Category).Distinct().ToList()
         };

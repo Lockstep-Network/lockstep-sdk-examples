@@ -83,6 +83,12 @@ public static class PythonSdk
 
     private static async Task ExportSchemas(ProjectSchema project, ApiSchema api)
     {
+        var modelsDir = Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "models");
+        foreach (var modelFile in Directory.EnumerateFiles(modelsDir, "*.py"))
+        {
+            File.Delete(modelFile);
+        }
+
         foreach (var item in api.Schemas)
         {
             if (item.Fields != null)
@@ -116,8 +122,7 @@ public static class PythonSdk
 
                 sb.AppendLine();
 
-                var modelPath = Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "models",
-                    item.Name.ToSnakeCase() + ".py");
+                var modelPath = Path.Combine(modelsDir, item.Name.ToSnakeCase() + ".py");
                 await File.WriteAllTextAsync(modelPath, sb.ToString());
             }
         }
@@ -125,6 +130,12 @@ public static class PythonSdk
 
     private static async Task ExportEndpoints(ProjectSchema project, ApiSchema api)
     {
+        var clientsDir = Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "clients");
+        foreach (var clientFile in Directory.EnumerateFiles(clientsDir, "*.py"))
+        {
+            File.Delete(clientFile);
+        }
+
         // Gather a list of unique categories
         foreach (var cat in api.Categories)
         {
@@ -136,7 +147,7 @@ public static class PythonSdk
             // Construct header
             sb.Append(FileHeader(project));
             sb.AppendLine($"from {project.Python.Namespace}.{project.Python.ResponseClass.ProperCaseToSnakeCase()} import {project.Python.ResponseClass}");
-            sb.AppendLine($"from {project.Python.Namespace}.error_result import ErrorResult");
+            sb.AppendLine($"from {project.Python.Namespace}.models.errorresult import ErrorResult");
             foreach (var import in imports.Distinct())
             {
                 sb.AppendLine(import);
@@ -200,8 +211,7 @@ public static class PythonSdk
             }
 
             // Write this category to a file
-            var classPath = Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "clients",
-                cat.ToSnakeCase() + "_client.py");
+            var classPath = Path.Combine(clientsDir, cat.ToSnakeCase() + "_client.py");
             await File.WriteAllTextAsync(classPath, sb.ToString());
         }
     }
@@ -239,14 +249,14 @@ public static class PythonSdk
 
     private static void AddImport(ProjectSchema project, ApiSchema api, List<string> imports, string dataType)
     {
-        if (api.IsEnum(dataType) || dataType is null or "TestTimeoutException" or "File" or "byte[]" or "binary")
+        if (api.IsEnum(dataType) || dataType is null or "TestTimeoutException" or "File" or "byte[]" or "binary" or "string")
         {
             return;
         }
 
         if (dataType is "ActionResultModel")
         {
-            imports.Add($"from {project.Python.Namespace}.action_result_model import ActionResultModel");
+            imports.Add($"from {project.Python.Namespace}.models.actionresultmodel import ActionResultModel");
         }
         else
         {

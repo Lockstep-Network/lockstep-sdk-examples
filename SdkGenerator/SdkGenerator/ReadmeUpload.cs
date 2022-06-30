@@ -11,10 +11,10 @@ namespace SdkGenerator;
 
 public static class ReadmeUpload
 {
-    public static async Task UploadSchemas(ApiSchema api, string argReadmeKey, string format)
+    public static async Task UploadSchemas(ApiSchema api, string readmeApiKey, string format)
     {
         var order = 1;
-        if (!string.IsNullOrWhiteSpace(argReadmeKey))
+        if (!string.IsNullOrWhiteSpace(readmeApiKey))
         {
             foreach (var schema in api.Schemas.Where(schema => schema.Fields != null))
             {
@@ -27,7 +27,7 @@ public static class ReadmeUpload
                         _ => ""
                     };
 
-                    await UploadToReadme(argReadmeKey, schema.Name, order++, markdownText);
+                    await UploadToReadme(readmeApiKey, schema.Name, order++, markdownText);
                 }
                 catch (Exception e)
                 {
@@ -90,6 +90,7 @@ public static class ReadmeUpload
             {
                 modifiers += $"(maximum {field.MaxLength} characters) ";
             }
+
             sb.AppendLine($"| **{field.Name}** | {field.DataType} {modifiers} | {FixupLines(field.DescriptionMarkdown)} |");
         }
 
@@ -268,12 +269,12 @@ public static class ReadmeUpload
         return sb.ToString();
     }
 
-    private static async Task<IRestResponse> CallReadme(string argReadmeKey, string resource, Method method, string body = null)
+    private static async Task<RestResponse> CallReadme(string readmeApiKey, string resource, Method method, string body = null)
     {
         var client = new RestClient("https://dash.readme.com");
         var request = new RestRequest(resource, method);
         request.AddHeader("Accept", "application/json");
-        request.AddHeader("Authorization", $"Basic {argReadmeKey}");
+        request.AddHeader("Authorization", $"Basic {readmeApiKey}");
         if (body != null)
         {
             request.AddHeader("Content-Type", "application/json");
@@ -285,35 +286,44 @@ public static class ReadmeUpload
 
     private class ReadmeDocModel
     {
-        public bool hidden { get; set; }
-        public string title { get; set; }
-        public string body { get; set; }
-        public string category { get; set; }
-        public int order { get; set; }
+        [JsonProperty("hidden")]
+        public bool Hidden { get; set; }
+
+        [JsonProperty("title")]
+        public string Title { get; set; }
+
+        [JsonProperty("body")]
+        public string Body { get; set; }
+
+        [JsonProperty("category")]
+        public string Category { get; set; }
+
+        [JsonProperty("order")]
+        public int Order { get; set; }
     }
 
-    private static async Task UploadToReadme(string argReadmeKey, string schemaName, int order, string markdown)
+    private static async Task UploadToReadme(string readmeApiKey, string schemaName, int order, string markdown)
     {
         var docName = $"/api/v1/docs/{schemaName.ToLower()}";
         var doc = new ReadmeDocModel
         {
-            hidden = false,
-            order = order,
-            title = schemaName,
-            body = markdown,
-            category = "6169fb9ea16b55001fa1f4cf"
+            Hidden = false,
+            Order = order,
+            Title = schemaName,
+            Body = markdown,
+            Category = "6169fb9ea16b55001fa1f4cf"
         };
 
         // Check to see if the model exists
-        var modelExists = await CallReadme(argReadmeKey, docName, Method.GET);
+        var modelExists = await CallReadme(readmeApiKey, docName, Method.Get);
         if (modelExists.IsSuccessful)
         {
-            var result = await CallReadme(argReadmeKey, docName, Method.PUT, JsonConvert.SerializeObject(doc));
+            var result = await CallReadme(readmeApiKey, docName, Method.Put, JsonConvert.SerializeObject(doc));
             Console.WriteLine($"Updated {schemaName}: {result.StatusCode}");
         }
         else
         {
-            var result = await CallReadme(argReadmeKey, "/api/v1/docs", Method.POST, JsonConvert.SerializeObject(doc));
+            var result = await CallReadme(readmeApiKey, "/api/v1/docs", Method.Post, JsonConvert.SerializeObject(doc));
             Console.WriteLine($"Created {schemaName}: {result.StatusCode}");
         }
     }

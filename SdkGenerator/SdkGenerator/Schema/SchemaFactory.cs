@@ -322,7 +322,6 @@ public static class SchemaFactory
                && !name.EndsWith("FetchResult")
                && !name.EndsWith("Handle")
                && !name.EndsWith("Info")
-               && !string.Equals(name, "ActionResultModel")
                && !string.Equals(name, "Assembly")
                && !string.Equals(name, "CustomAttributeData")
                && !string.Equals(name, "Module")
