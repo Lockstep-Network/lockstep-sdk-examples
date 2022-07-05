@@ -226,7 +226,7 @@ public static class JavaSdk
                 {
                     sb.AppendLine();
                     sb.Append(endpoint.DescriptionMarkdown.ToJavaDoc(4,
-                        $"A {{@link {project.Java.Namespace}.models.{project.Java.ResponseClass}}} containing the results",
+                        $"A {{@link {project.Java.Namespace}.{project.Java.ResponseClass}}} containing the results",
                         endpoint.Parameters));
 
                     // Figure out the parameter list
