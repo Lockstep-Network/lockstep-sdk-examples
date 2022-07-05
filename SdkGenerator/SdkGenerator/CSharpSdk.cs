@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Web;
 using SdkGenerator.Schema;
 
-namespace SdkGenerator.Sdks;
+namespace SdkGenerator;
 
 public static class CSharpSdk
 {
