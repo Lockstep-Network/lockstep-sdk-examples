@@ -2,6 +2,7 @@
 using System.IO;
 using CommandLine;
 using Newtonsoft.Json;
+using SdkGenerator.Project;
 
 namespace SdkGenerator;
 

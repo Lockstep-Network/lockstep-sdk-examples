@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Polly;
 using Polly.Retry;
+using SdkGenerator.Project;
 using SdkGenerator.Schema;
 
 namespace SdkGenerator;

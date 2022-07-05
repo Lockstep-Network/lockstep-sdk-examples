@@ -1,4 +1,4 @@
-﻿namespace SdkGenerator;
+﻿namespace SdkGenerator.Project;
 
 public class ProjectSchema
 {
