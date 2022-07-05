@@ -28,6 +28,13 @@ public static class RubySdk
 
     private static async Task ExportSchemas(ProjectSchema project, ApiSchema api)
     {
+        var modelsDir = Path.Combine(project.Ruby.Folder, "lib", project.Ruby.Namespace, "models");
+        Directory.CreateDirectory(modelsDir);
+        foreach (var modelFile in Directory.EnumerateFiles(modelsDir, "*.rb"))
+        {
+            File.Delete(modelFile);
+        }
+        
         foreach (var item in api.Schemas)
         {
             if (item.Fields != null)
@@ -82,8 +89,7 @@ public static class RubySdk
                 sb.AppendLine("        end");
                 sb.AppendLine("    end");
                 sb.AppendLine("end");
-                var modelPath = Path.Combine(project.Ruby.Folder, "lib", project.Ruby.Namespace, "models",
-                    item.Name.ProperCaseToSnakeCase() + ".rb");
+                var modelPath = Path.Combine(modelsDir, item.Name.ProperCaseToSnakeCase() + ".rb");
                 await File.WriteAllTextAsync(modelPath, sb.ToString());
             }
         }
@@ -91,6 +97,13 @@ public static class RubySdk
 
     private static async Task ExportEndpoints(ProjectSchema project, ApiSchema api)
     {
+        var clientsDir = Path.Combine(project.Ruby.Folder, "lib", project.Ruby.Namespace, "clients");
+        Directory.CreateDirectory(clientsDir);
+        foreach (var clientsFile in Directory.EnumerateFiles(clientsDir, "*.rb"))
+        {
+            File.Delete(clientsFile);
+        }
+        
         // Gather a list of unique categories
         foreach (var cat in api.Categories)
         {
@@ -143,8 +156,7 @@ public static class RubySdk
             sb.AppendLine("end");
 
             // Write this category to a file
-            var classPath = Path.Combine(project.Ruby.Folder, "lib", project.Ruby.Namespace, "clients",
-                cat.ProperCaseToSnakeCase() + "_client.rb");
+            var classPath = Path.Combine(clientsDir, cat.ProperCaseToSnakeCase() + "_client.rb");
             await File.WriteAllTextAsync(classPath, sb.ToString());
         }
     }

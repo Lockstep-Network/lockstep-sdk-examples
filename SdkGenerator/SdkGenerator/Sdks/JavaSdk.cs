@@ -69,6 +69,9 @@ public static class JavaSdk
             case "binary":
                 s = "byte[]";
                 break;
+            case "TestTimeoutException":
+                s = "ErrorResult";
+                break;
         }
 
         if (isArray)
@@ -92,6 +95,14 @@ public static class JavaSdk
 
     private static async Task ExportSchemas(ProjectSchema project, ApiSchema api)
     {
+        var modelsDir = Path.Combine(project.Java.Folder, "src", "main", "java",
+            project.Java.Namespace.Replace('.', Path.DirectorySeparatorChar), "models");
+        Directory.CreateDirectory(modelsDir);
+        foreach (var modelFile in Directory.EnumerateFiles(modelsDir, "*.java"))
+        {
+            File.Delete(modelFile);
+        }
+
         foreach (var item in api.Schemas)
         {
             if (item.Fields != null)
@@ -153,9 +164,7 @@ public static class JavaSdk
                 }
 
                 sb.AppendLine("};");
-                var classPath = Path.Combine(project.Java.Folder, "src", "main", "java",
-                    project.Java.Namespace.Replace('.', Path.DirectorySeparatorChar), "models",
-                    item.Name + ".java");
+                var classPath = Path.Combine(modelsDir, item.Name + ".java");
                 await File.WriteAllTextAsync(classPath, sb.ToString());
             }
         }
@@ -163,6 +172,14 @@ public static class JavaSdk
 
     private static async Task ExportEndpoints(ProjectSchema project, ApiSchema api)
     {
+        var clientsDir = Path.Combine(project.Java.Folder, "src", "main", "java",
+            project.Java.Namespace.Replace('.', Path.DirectorySeparatorChar), "clients");
+        Directory.CreateDirectory(clientsDir);
+        foreach (var clientsFile in Directory.EnumerateFiles(clientsDir, "*.java"))
+        {
+            File.Delete(clientsFile);
+        }
+
         // Gather a list of unique categories
         foreach (var cat in api.Categories)
         {
@@ -174,7 +191,7 @@ public static class JavaSdk
             sb.AppendLine();
             sb.AppendLine($"import {project.Java.Namespace}.{project.Java.ClassName};");
             sb.AppendLine($"import {project.Java.Namespace}.RestRequest;");
-            sb.AppendLine($"import {project.Java.Namespace}.models.{project.Java.ResponseClass};");
+            sb.AppendLine($"import {project.Java.Namespace}.{project.Java.ResponseClass};");
             sb.AppendLine("import org.jetbrains.annotations.NotNull;");
             sb.AppendLine("import org.jetbrains.annotations.Nullable;");
             foreach (var import in GetImports(project, api, cat))
@@ -270,27 +287,26 @@ public static class JavaSdk
             sb.AppendLine("}");
 
             // Write this category to a file
-            var classPath = Path.Combine(project.Java.Folder, "src", "main", "java",
-                project.Java.Namespace.Replace('.', Path.DirectorySeparatorChar), "clients",
-                $"{cat}Client.java");
+            var classPath = Path.Combine(clientsDir, $"{cat}Client.java");
             await File.WriteAllTextAsync(classPath, sb.ToString());
         }
     }
 
-    private static void AddImport(ApiSchema api, string name, List<string> list)
+    private static void AddImport(ApiSchema api, string name, HashSet<string> list)
     {
         if (name.EndsWith("FetchResult"))
         {
-            if (!list.Contains("FetchResult"))
-            {
-                list.Add("FetchResult");
-                list.Add("type-token");
-            }
+            list.Add("FetchResult");
+            list.Add("type-token");
 
             var innerType = name[..^11];
             AddImport(api, innerType, list);
         }
-        else if (!api.IsEnum(name) && !list.Contains(name))
+        else if (name.Equals("TestTimeoutException"))
+        {
+            list.Add("ErrorResult");
+        }
+        else if (!api.IsEnum(name))
         {
             list.Add(name);
         }
@@ -298,7 +314,7 @@ public static class JavaSdk
 
     private static List<string> GetImports(ProjectSchema project, ApiSchema api, string category)
     {
-        var types = new List<string>();
+        var types = new HashSet<string>();
         foreach (var endpoint in api.Endpoints)
         {
             if (endpoint.Category == category && !endpoint.Deprecated)
@@ -317,7 +333,7 @@ public static class JavaSdk
 
     private static List<string> GetImports(ProjectSchema project, ApiSchema api, SchemaItem schema)
     {
-        var types = new List<string>();
+        var types = new HashSet<string>();
         foreach (var field in schema.Fields)
         {
             if (!field.Deprecated)
@@ -353,8 +369,10 @@ public static class JavaSdk
             case "File":
             case "byte[]":
                 return $"import {project.Java.Namespace}.BlobRequest;";
+            case "FetchResult":
+                return $"import {project.Java.Namespace}.{type};";
             default:
-                return $"import {project.Java.Namespace}.models." + type + ";";
+                return $"import {project.Java.Namespace}.models.{type};";
         }
     }
 

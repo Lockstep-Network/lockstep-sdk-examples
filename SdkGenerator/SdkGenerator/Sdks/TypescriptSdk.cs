@@ -89,6 +89,7 @@ public static class TypescriptSdk
     private static async Task ExportSchemas(ProjectSchema project, ApiSchema api)
     {
         var modelsDir = Path.Combine(project.Typescript.Folder, "src", "models");
+        Directory.CreateDirectory(modelsDir);
         foreach (var modelFile in Directory.EnumerateFiles(modelsDir, "*.ts"))
         {
             File.Delete(modelFile);
@@ -130,6 +131,7 @@ public static class TypescriptSdk
     private static async Task ExportEndpoints(ProjectSchema project, ApiSchema api)
     {
         var clientsDir = Path.Combine(project.Typescript.Folder, "src", "clients");
+        Directory.CreateDirectory(clientsDir);
         foreach (var clientsFile in Directory.EnumerateFiles(clientsDir, "*.ts"))
         {
             File.Delete(clientsFile);

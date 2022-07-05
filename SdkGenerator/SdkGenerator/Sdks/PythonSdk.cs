@@ -84,6 +84,7 @@ public static class PythonSdk
     private static async Task ExportSchemas(ProjectSchema project, ApiSchema api)
     {
         var modelsDir = Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "models");
+        Directory.CreateDirectory(modelsDir);
         foreach (var modelFile in Directory.EnumerateFiles(modelsDir, "*.py"))
         {
             File.Delete(modelFile);
@@ -131,6 +132,7 @@ public static class PythonSdk
     private static async Task ExportEndpoints(ProjectSchema project, ApiSchema api)
     {
         var clientsDir = Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "clients");
+        Directory.CreateDirectory(clientsDir);
         foreach (var clientFile in Directory.EnumerateFiles(clientsDir, "*.py"))
         {
             File.Delete(clientFile);

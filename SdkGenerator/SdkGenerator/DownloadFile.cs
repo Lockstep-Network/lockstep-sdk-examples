@@ -233,6 +233,13 @@ public static class DownloadFile
                     DescriptionMarkdown = "If this error corresponds to a specific instance or object, this field indicates which one.",
                     DataType = "string",
                     Nullable = false,
+                },
+                new()
+                {
+                    Name = "content",
+                    DescriptionMarkdown = "The full content of the HTTP response.",
+                    DataType = "string",
+                    Nullable = false,
                 }
             },
         });

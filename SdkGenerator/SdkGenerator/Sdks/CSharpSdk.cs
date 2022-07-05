@@ -102,6 +102,9 @@ public static class CSharpSdk
             case "uuid":
                 s = "Guid";
                 break;
+            case "TestTimeoutException":
+                s = "ErrorResult";
+                break;
         }
 
         if (isArray)
@@ -119,6 +122,13 @@ public static class CSharpSdk
 
     private static async Task ExportSchemas(ProjectSchema project, ApiSchema api)
     {
+        var modelsDir = Path.Combine(project.Csharp.Folder, "src", "Models");
+        Directory.CreateDirectory(modelsDir);
+        foreach (var modelFile in Directory.EnumerateFiles(modelsDir, "*.cs"))
+        {
+            File.Delete(modelFile);
+        }
+
         foreach (var item in api.Schemas)
         {
             var sb = new StringBuilder();
@@ -127,7 +137,7 @@ public static class CSharpSdk
             sb.AppendLine();
             sb.AppendLine("using System;");
             sb.AppendLine();
-            sb.AppendLine($"namespace {project.Csharp.Namespace}");
+            sb.AppendLine($"namespace {project.Csharp.Namespace}.Models");
             sb.AppendLine("{");
             if (item.Fields != null)
             {
@@ -159,7 +169,7 @@ public static class CSharpSdk
             }
 
             sb.AppendLine("}");
-            var modelPath = Path.Combine(project.Csharp.Folder, "src", "models", item.Name + ".cs");
+            var modelPath = Path.Combine(modelsDir, item.Name + ".cs");
             await File.WriteAllTextAsync(modelPath, sb.ToString());
         }
     }
@@ -203,6 +213,13 @@ public static class CSharpSdk
 
     private static async Task ExportEndpoints(ProjectSchema project, ApiSchema api)
     {
+        var clientsDir = Path.Combine(project.Csharp.Folder, "src", "Clients");
+        Directory.CreateDirectory(clientsDir);
+        foreach (var clientFile in Directory.EnumerateFiles(clientsDir, "*.cs"))
+        {
+            File.Delete(clientFile);
+        }
+
         // Gather a list of unique categories
         foreach (var cat in api.Categories)
         {
@@ -214,9 +231,10 @@ public static class CSharpSdk
             sb.AppendLine("using System.Collections.Generic;");
             sb.AppendLine("using System.Net.Http;");
             sb.AppendLine("using System.Threading.Tasks;");
+            sb.AppendLine($"using {project.Csharp.Namespace}.Models;");
             sb.AppendLine();
             sb.AppendLine();
-            sb.AppendLine($"namespace {project.Csharp.Namespace}");
+            sb.AppendLine($"namespace {project.Csharp.Namespace}.Clients");
             sb.AppendLine("{");
             sb.AppendLine("    /// <summary>");
             sb.AppendLine($"    /// API methods related to {cat}");
@@ -228,7 +246,8 @@ public static class CSharpSdk
             sb.AppendLine("        /// <summary>");
             sb.AppendLine("        /// Constructor");
             sb.AppendLine("        /// </summary>");
-            sb.AppendLine($"        public {cat}Client({project.Csharp.ClassName} client) {{");
+            sb.AppendLine($"        public {cat}Client({project.Csharp.ClassName} client)");
+            sb.AppendLine("        {");
             sb.AppendLine("            _client = client;");
             sb.AppendLine("        }");
 
@@ -303,7 +322,7 @@ public static class CSharpSdk
             sb.AppendLine("}");
 
             // Write this category to a file
-            var modulePath = Path.Combine(project.Csharp.Folder, "src", "clients", $"{cat}Client.cs");
+            var modulePath = Path.Combine(clientsDir, $"{cat}Client.cs");
             await File.WriteAllTextAsync(modulePath, sb.ToString());
         }
     }
