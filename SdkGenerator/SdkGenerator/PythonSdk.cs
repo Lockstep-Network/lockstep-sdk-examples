@@ -74,7 +74,7 @@ public static class PythonSdk
             s = "list[" + s + "]";
         }
 
-        if (s.EndsWith("FetchResult"))
+        if (s.EndsWith("FetchResult") && !s.EndsWith("SummaryFetchResult"))
         {
             s = $"FetchResult[{s[..^11]}]";
         }
@@ -149,7 +149,8 @@ public static class PythonSdk
 
             // Construct header
             sb.Append(FileHeader(project));
-            sb.AppendLine($"from {project.Python.Namespace}.{project.Python.ResponseClass.ProperCaseToSnakeCase()} import {project.Python.ResponseClass}");
+            sb.AppendLine(
+                $"from {project.Python.Namespace}.{project.Python.ResponseClass.ProperCaseToSnakeCase()} import {project.Python.ResponseClass}");
             sb.AppendLine($"from {project.Python.Namespace}.models.errorresult import ErrorResult");
             foreach (var import in imports.Distinct())
             {
@@ -161,7 +162,8 @@ public static class PythonSdk
             sb.AppendLine("    \"\"\"");
             sb.AppendLine($"    API methods related to {cat}");
             sb.AppendLine("    \"\"\"");
-            sb.AppendLine($"    from {project.Python.Namespace}.{project.Python.ClassName.ProperCaseToSnakeCase()} import {project.Python.ClassName}");
+            sb.AppendLine(
+                $"    from {project.Python.Namespace}.{project.Python.ClassName.ProperCaseToSnakeCase()} import {project.Python.ClassName}");
             sb.AppendLine();
             sb.AppendLine($"    def __init__(self, client: {project.Python.ClassName}):");
             sb.AppendLine("        self.client = client");
@@ -198,7 +200,8 @@ public static class PythonSdk
                     sb.AppendLine(endpoint.Path.Contains('{')
                         ? $"        path = f\"{endpoint.Path}\""
                         : $"        path = \"{endpoint.Path}\"");
-                    sb.AppendLine($"        result = self.client.send_request(\"{endpoint.Method.ToUpper()}\", path, {(hasBody ? "body" : "None")}, {(string.IsNullOrWhiteSpace(paramListStr) ? "None" : "{" + bodyJson + "}")}, {(fileUploadParam == null ? "None" : fileUploadParam.Name)})");
+                    sb.AppendLine(
+                        $"        result = self.client.send_request(\"{endpoint.Method.ToUpper()}\", path, {(hasBody ? "body" : "None")}, {(string.IsNullOrWhiteSpace(paramListStr) ? "None" : "{" + bodyJson + "}")}, {(fileUploadParam == null ? "None" : fileUploadParam.Name)})");
                     if (isFileDownload)
                     {
                         sb.AppendLine("        return result");
@@ -206,9 +209,11 @@ public static class PythonSdk
                     else
                     {
                         sb.AppendLine("        if result.status_code >= 200 and result.status_code < 300:");
-                        sb.AppendLine($"            return {project.Python.ResponseClass}(True, result.status_code, {originalReturnDataType}(**result.json()), None)");
+                        sb.AppendLine(
+                            $"            return {project.Python.ResponseClass}(True, result.status_code, {originalReturnDataType}(**result.json()), None)");
                         sb.AppendLine("        else:");
-                        sb.AppendLine($"            return {project.Python.ResponseClass}(False, result.status_code, None, ErrorResult(**result.json()))");
+                        sb.AppendLine(
+                            $"            return {project.Python.ResponseClass}(False, result.status_code, None, ErrorResult(**result.json()))");
                     }
                 }
             }
@@ -263,7 +268,7 @@ public static class PythonSdk
         }
         else
         {
-            if (dataType.EndsWith("FetchResult"))
+            if (dataType.EndsWith("FetchResult") && !dataType.EndsWith("SummaryFetchResult"))
             {
                 imports.Add($"from {project.Python.Namespace}.fetch_result import FetchResult");
                 dataType = dataType[..^11];

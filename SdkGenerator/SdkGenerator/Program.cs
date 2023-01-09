@@ -1,12 +1,13 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using CommandLine;
 using Newtonsoft.Json;
 using SdkGenerator.Project;
 
 namespace SdkGenerator;
 
-internal static class Program
+public static class Program
 {
     private class Options
     {
@@ -14,9 +15,9 @@ internal static class Program
         public string ProjectFile { get; set; }
     }
 
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
-        Parser.Default.ParseArguments<Options>(args)
+        await Parser.Default.ParseArguments<Options>(args)
             .WithParsedAsync(async o =>
             {
                 // Retrieve project
@@ -60,6 +61,8 @@ internal static class Program
                     await ReadmeUpload.UploadSchemas(api, project.Readme.ApiKey, "list");
                     Console.WriteLine("Uploaded data models to Readme.");
                 }
-            }).Wait();
+
+                Console.WriteLine("Done!");
+            });
     }
 }
