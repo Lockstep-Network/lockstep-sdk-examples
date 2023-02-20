@@ -37,6 +37,7 @@ public static class Program
                 }
 
                 // Fetch the environment and version number
+                Console.WriteLine($"Retrieving swagger file from {project.SwaggerUrl}");
                 var api = await DownloadFile.GenerateApi(project);
                 if (api == null)
                 {
@@ -44,7 +45,7 @@ public static class Program
                     return;
                 }
 
-                Console.WriteLine($"Retrieving swagger file from {project.SwaggerUrl} (version {api.Semver2})...");
+                Console.WriteLine($"Retrieved swagger file. Version: {api.Semver2}");
 
                 // Let's do some software development kits!
                 await TypescriptSdk.Export(project, api);
