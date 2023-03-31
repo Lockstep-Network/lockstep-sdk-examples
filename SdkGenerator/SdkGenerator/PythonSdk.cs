@@ -151,7 +151,7 @@ public static class PythonSdk
             sb.Append(FileHeader(project));
             sb.AppendLine(
                 $"from {project.Python.Namespace}.{project.Python.ResponseClass.ProperCaseToSnakeCase()} import {project.Python.ResponseClass}");
-            sb.AppendLine($"from {project.Python.Namespace}.models.errorresult import ErrorResult");
+            sb.AppendLine($"from {project.Python.Namespace}.errorresult import ErrorResult");
             foreach (var import in imports.Distinct())
             {
                 sb.AppendLine(import);

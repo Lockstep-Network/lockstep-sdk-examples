@@ -1,6 +1,7 @@
 from {{ project.python.namespace }}.{{ project.python.class_name | proper_case_to_snake_case }} import {{ project.python.class_name }}
 from {{ project.python.namespace }}.{{ project.python.response_class | proper_case_to_snake_case }} import {{ project.python.response_class }}
 from {{ project.python.namespace }}.fetch_result import FetchResult
+from {{ project.python.namespace }}.errorresult import ErrorResult
 {{~ for cat in api.categories ~}}
 from {{ project.python.namespace }}.clients.{{ cat | to_snake_case }}_client import {{ cat }}Client
 {{~ end ~}}

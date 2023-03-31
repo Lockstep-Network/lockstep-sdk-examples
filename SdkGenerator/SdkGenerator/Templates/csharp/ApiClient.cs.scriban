@@ -167,10 +167,9 @@ namespace {{ project.csharp.namespace }}
         /// <typeparam name="T">The type of the expected response</typeparam>
         /// <returns>The response object including success/failure codes and error messages as appropriate</returns>
         public async Task<{{ project.csharp.response_class }}<T>> Request<T>(HttpMethod method, string path,
-            Dictionary<string, object> query, object body, string filename) where T: class
+            Dictionary<string, object> query, object body, string filename) where T : class
         {
-            var sw = new Stopwatch();
-            sw.Start();
+            var sw = Stopwatch.StartNew();
             var request = new HttpRequestMessage();
             request.Method = method;
             request.Headers.Add("Accept", "application/json");
@@ -286,6 +285,7 @@ namespace {{ project.csharp.namespace }}
                         result.Error = new ErrorResult()
                         {
                             Title = $"{(int)response.StatusCode} {response.StatusCode}",
+                            Status = (int)response.StatusCode,
                             Content = errorContent
                         };
                     }
