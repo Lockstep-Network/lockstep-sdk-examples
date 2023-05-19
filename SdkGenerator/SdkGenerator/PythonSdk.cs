@@ -27,7 +27,7 @@ public static class PythonSdk
                + "#\n\n";
     }
 
-    private static string FixupType(ApiSchema api, string typeName, bool isArray)
+    private static string FixupType(ApiSchema api, string typeName, bool isArray, bool isLockstepResponse = false)
     {
         var s = typeName;
         if (api.IsEnum(typeName))
@@ -69,14 +69,20 @@ public static class PythonSdk
                 break;
         }
 
-        if (isArray)
-        {
-            s = "list[" + s + "]";
-        }
-
         if (s.EndsWith("FetchResult") && !s.EndsWith("SummaryFetchResult"))
         {
             s = $"FetchResult[{s[..^11]}]";
+            return s;
+        }
+
+        if (!isLockstepResponse)
+        {
+            s = "object";
+        }
+
+        if (isArray)
+        {
+            s = "list[" + s + "]";
         }
 
         return s;
@@ -102,12 +108,6 @@ public static class PythonSdk
 
                 // Add in all the rest of the imports
                 sb.AppendLine("from dataclasses import dataclass");
-                foreach (var f in item.Fields.Where(f => f.DataTypeRef != null && f.DataType != item.Name))
-                {
-                    sb.AppendLine(
-                        $"from {project.Python.Namespace}.models.{f.DataType.ToSnakeCase()} import {f.DataType}");
-                }
-
                 sb.AppendLine();
                 sb.AppendLine("@dataclass");
                 sb.AppendLine($"class {item.Name}:");
@@ -120,6 +120,21 @@ public static class PythonSdk
 
                 sb.AppendLine();
 
+                if (item.Name.Equals("ErrorResult", StringComparison.OrdinalIgnoreCase))
+                {
+                    sb.AppendLine($"    @classmethod");
+                    sb.AppendLine($"    def from_json(cls, data: dict):");
+                    sb.AppendLine($"        obj = cls()");
+                    sb.AppendLine($"        for key, value in data.items():");
+                    sb.AppendLine($"            if hasattr(obj, key):");
+                    sb.AppendLine($"                setattr(obj, key, value)");
+                    sb.AppendLine($"        return obj");
+                }
+
+                // Add helper methods for users to serialize objects
+                sb.AppendLine($"    def to_dict(self) -> dict:");
+                sb.AppendLine($"        return dataclass.asdict(self)");
+
                 var modelPath = Path.Combine(modelsDir, item.Name.ToSnakeCase() + ".py");
                 await File.WriteAllTextAsync(modelPath, sb.ToString());
             }
@@ -129,19 +144,19 @@ public static class PythonSdk
     private static async Task CleanModuleDirectory(string pyModuleDir)
     {
         Directory.CreateDirectory(pyModuleDir);
-        
+
         var initFile = Path.Combine(pyModuleDir, "__init__.py");
         if (!File.Exists(initFile))
         {
             await File.Create(initFile).DisposeAsync();
         }
-        
+
         foreach (var pyFile in Directory.EnumerateFiles(pyModuleDir, "*.py").Where(f => !f.EndsWith("__init__.py")))
         {
             File.Delete(pyFile);
         }
     }
-    
+
     private static async Task ExportEndpoints(ProjectSchema project, ApiSchema api)
     {
         var clientsDir = Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "clients");
@@ -185,7 +200,8 @@ public static class PythonSdk
 
                     // Is this a file download API?
                     var isFileDownload = endpoint.ReturnDataType.DataType is "byte[]" or "binary" or "File";
-                    var originalReturnDataType = FixupType(api, endpoint.ReturnDataType.DataType, endpoint.ReturnDataType.IsArray);
+                    var originalReturnDataType = FixupType(api, endpoint.ReturnDataType.DataType,
+                        endpoint.ReturnDataType.IsArray, true);
                     string returnDataType;
                     if (!isFileDownload)
                     {
@@ -217,11 +233,28 @@ public static class PythonSdk
                     else
                     {
                         sb.AppendLine("        if result.status_code >= 200 and result.status_code < 300:");
-                        sb.AppendLine(
-                            $"            return {project.Python.ResponseClass}(True, result.status_code, {originalReturnDataType}(**result.json()), None)");
+                        if (originalReturnDataType.StartsWith("list", StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Use a list comprehension to unpack array responses
+                            sb.AppendLine(
+                                $"            return {project.Python.ResponseClass}(True, result.status_code, [{endpoint.ReturnDataType.DataType}(**item) for item in result.json()], None)");
+                        }
+                        else if (originalReturnDataType.StartsWith("FetchResult", StringComparison.OrdinalIgnoreCase))
+                        {
+                            // Fetch results don't unpack as expected, use from_json helper method
+                            sb.AppendLine(
+                                $"            return {project.Python.ResponseClass}(True, result.status_code, FetchResult.from_json(result.json(), {endpoint.ReturnDataType.DataType[..^11]}), None)");                            
+                            Console.WriteLine("halp");
+                        }
+                        else
+                        {
+                            sb.AppendLine(
+                                $"            return {project.Python.ResponseClass}(True, result.status_code, {originalReturnDataType}(**result.json()), None)");
+                        }
+
                         sb.AppendLine("        else:");
                         sb.AppendLine(
-                            $"            return {project.Python.ResponseClass}(False, result.status_code, None, ErrorResult(**result.json()))");
+                            $"            return {project.Python.ResponseClass}(False, result.status_code, None, ErrorResult.from_json(result.json()))");
                     }
                 }
             }
