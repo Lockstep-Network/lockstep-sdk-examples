@@ -27,7 +27,7 @@ public static class PythonSdk
                + "#\n\n";
     }
 
-    private static string FixupType(ApiSchema api, string typeName, bool isArray, bool isLockstepResponse = false)
+    private static string FixupType(ApiSchema api, string typeName, bool isArray, bool preserveType = false)
     {
         var s = typeName;
         if (api.IsEnum(typeName))
@@ -75,7 +75,7 @@ public static class PythonSdk
             return s;
         }
 
-        if (!isLockstepResponse)
+        if (!preserveType)
         {
             s = "object";
         }
@@ -214,7 +214,7 @@ public static class PythonSdk
 
                     // Figure out the parameter list
                     var hasBody = (from p in endpoint.Parameters where p.Location == "body" select p).Any();
-                    var paramListStr = string.Join(", ", from p in endpoint.Parameters select $"{p.Name}: {FixupType(api, p.DataType, p.IsArray)}");
+                    var paramListStr = string.Join(", ", from p in endpoint.Parameters select $"{p.Name}: {FixupType(api, p.DataType, p.IsArray, preserveType: true)}");
                     var bodyJson = string.Join(", ", from p in endpoint.Parameters where p.Location == "query" select $"\"{p.Name}\": {p.Name}");
                     var fileUploadParam = (from p in endpoint.Parameters where p.Location == "form" select p).FirstOrDefault();
 
@@ -351,7 +351,7 @@ public static class PythonSdk
             sb.AppendLine($"{prefix}----------");
             foreach (var p in parameters)
             {
-                sb.AppendLine($"{prefix}{p.Name} : {FixupType(api, p.DataType, p.IsArray)}");
+                sb.AppendLine($"{prefix}{p.Name} : {FixupType(api, p.DataType, p.IsArray, preserveType: true)}");
                 sb.AppendLine(p.DescriptionMarkdown.WrapMarkdown(72, $"{prefix}    "));
             }
         }
