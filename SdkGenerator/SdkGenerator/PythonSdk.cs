@@ -85,11 +85,7 @@ public static class PythonSdk
     private static async Task ExportSchemas(ProjectSchema project, ApiSchema api)
     {
         var modelsDir = Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "models");
-        Directory.CreateDirectory(modelsDir);
-        foreach (var modelFile in Directory.EnumerateFiles(modelsDir, "*.py"))
-        {
-            File.Delete(modelFile);
-        }
+        await CleanModuleDirectory(modelsDir);
 
         foreach (var item in api.Schemas)
         {
@@ -130,14 +126,26 @@ public static class PythonSdk
         }
     }
 
+    private static async Task CleanModuleDirectory(string pyModuleDir)
+    {
+        Directory.CreateDirectory(pyModuleDir);
+        
+        var initFile = Path.Combine(pyModuleDir, "__init__.py");
+        if (!File.Exists(initFile))
+        {
+            await File.Create(initFile).DisposeAsync();
+        }
+        
+        foreach (var pyFile in Directory.EnumerateFiles(pyModuleDir, "*.py").Where(f => !f.EndsWith("__init__.py")))
+        {
+            File.Delete(pyFile);
+        }
+    }
+    
     private static async Task ExportEndpoints(ProjectSchema project, ApiSchema api)
     {
         var clientsDir = Path.Combine(project.Python.Folder, "src", project.Python.Namespace, "clients");
-        Directory.CreateDirectory(clientsDir);
-        foreach (var clientFile in Directory.EnumerateFiles(clientsDir, "*.py"))
-        {
-            File.Delete(clientFile);
-        }
+        await CleanModuleDirectory(clientsDir);
 
         // Gather a list of unique categories
         foreach (var cat in api.Categories)
