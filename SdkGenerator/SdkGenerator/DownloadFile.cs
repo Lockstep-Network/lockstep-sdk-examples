@@ -191,57 +191,6 @@ public static class DownloadFile
             }
         }
 
-        schemaList.Add(new()
-        {
-            Name = "ErrorResult",
-            DescriptionMarkdown = "Represents a failed API request.",
-            Fields = new()
-            {
-                new()
-                {
-                    Name = "type",
-                    DescriptionMarkdown = "A description of the type of error that occurred.",
-                    DataType = "string",
-                    Nullable = false,
-                },
-                new()
-                {
-                    Name = "title",
-                    DescriptionMarkdown = "A short title describing the error.",
-                    DataType = "string",
-                    Nullable = false,
-                },
-                new()
-                {
-                    Name = "status",
-                    DescriptionMarkdown = "If an error code is applicable, this contains an error number.",
-                    DataType = "int32",
-                    Nullable = false,
-                },
-                new()
-                {
-                    Name = "detail",
-                    DescriptionMarkdown = "If detailed information about this error is available, this value contains more information.",
-                    DataType = "string",
-                    Nullable = false,
-                },
-                new()
-                {
-                    Name = "instance",
-                    DescriptionMarkdown = "If this error corresponds to a specific instance or object, this field indicates which one.",
-                    DataType = "string",
-                    Nullable = false,
-                },
-                new()
-                {
-                    Name = "content",
-                    DescriptionMarkdown = "The full content of the HTTP response.",
-                    DataType = "string",
-                    Nullable = false,
-                }
-            },
-        });
-
         // Collect all the APIs
         var endpointList = new List<EndpointItem>();
         var paths = doc.RootElement.GetProperty("paths");
