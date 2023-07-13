@@ -158,7 +158,7 @@ public static class PythonSdk
             await File.Create(initFile).DisposeAsync();
         }
 
-        foreach (var pyFile in Directory.EnumerateFiles(pyModuleDir, "*.py").Where(f => !f.EndsWith("__init__.py")))
+        foreach (var pyFile in Directory.EnumerateFiles(pyModuleDir, "*.py").Where(f => !f.EndsWith("__init__.py") && !f.EndsWith("errorresult.py")))
         {
             File.Delete(pyFile);
         }
@@ -181,7 +181,7 @@ public static class PythonSdk
             sb.Append(FileHeader(project));
             sb.AppendLine(
                 $"from {project.Python.Namespace}.{project.Python.ResponseClass.ProperCaseToSnakeCase()} import {project.Python.ResponseClass}");
-            sb.AppendLine($"from {project.Python.Namespace}.errorresult import ErrorResult");
+            sb.AppendLine($"from {project.Python.Namespace}.models.errorresult import ErrorResult");
             foreach (var import in imports.Distinct())
             {
                 sb.AppendLine(import);
@@ -251,7 +251,6 @@ public static class PythonSdk
                             // Fetch results don't unpack as expected, use from_json helper method
                             sb.AppendLine(
                                 $"            return {project.Python.ResponseClass}(True, result.status_code, FetchResult.from_json(result.json(), {endpoint.ReturnDataType.DataType[..^11]}), None)");                            
-                            Console.WriteLine("halp");
                         }
                         else
                         {
