@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -308,12 +308,14 @@ public static class SchemaFactory
             {
                 if (response.Name.StartsWith("2"))
                 {
-                    response.Value.TryGetProperty("content", out var contentProp);
-                    contentProp.TryGetProperty("application/json", out var appJsonProp);
-                    foreach (var responseSchemaProp in appJsonProp.EnumerateObject())
+                    if (response.Value.TryGetProperty("content", out var contentProp))
                     {
-                        item.ReturnDataType = GetTypeRef(responseSchemaProp);
-                        break;
+                        contentProp.TryGetProperty("application/json", out var appJsonProp);
+                        foreach (var responseSchemaProp in appJsonProp.EnumerateObject())
+                        {
+                            item.ReturnDataType = GetTypeRef(responseSchemaProp);
+                            break;
+                        }
                     }
                 }
             }

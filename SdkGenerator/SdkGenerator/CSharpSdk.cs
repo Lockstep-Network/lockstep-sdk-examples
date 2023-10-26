@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -255,7 +255,7 @@ public static class CSharpSdk
             // Run through all APIs
             foreach (var endpoint in api.Endpoints)
             {
-                if (endpoint.Category == cat && !endpoint.Deprecated)
+                if (endpoint.Category == cat && !endpoint.Deprecated && endpoint.ReturnDataType != null)
                 {
                     sb.AppendLine();
                     sb.Append(MarkdownToDocblock(endpoint.DescriptionMarkdown, 8, endpoint.Parameters));
