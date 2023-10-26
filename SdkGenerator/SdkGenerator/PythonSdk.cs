@@ -129,18 +129,24 @@ public static class PythonSdk
 
                 if (item.Name.Equals("ErrorResult", StringComparison.OrdinalIgnoreCase))
                 {
-                    sb.AppendLine($"    @classmethod");
-                    sb.AppendLine($"    def from_json(cls, data: dict):");
-                    sb.AppendLine($"        obj = cls()");
-                    sb.AppendLine($"        for key, value in data.items():");
-                    sb.AppendLine($"            if hasattr(obj, key):");
-                    sb.AppendLine($"                setattr(obj, key, value)");
-                    sb.AppendLine($"        return obj");
+                    sb.AppendLine("    @classmethod");
+                    sb.AppendLine("    def from_json(cls, data: dict):");
+                    sb.AppendLine("        obj = cls()");
+                    sb.AppendLine("        for key, value in data.items():");
+                    sb.AppendLine("            if hasattr(obj, key):");
+                    sb.AppendLine("                setattr(obj, key, value)");
+                    sb.AppendLine("        return obj");
                 }
 
+                // Add generic init methods to allow future extensions to not break existing models
+                sb.AppendLine("    def __init__(self, **kwargs):");
+                sb.AppendLine("        for key, value in kwargs.items():");
+                sb.AppendLine("            setattr(self, key, value)");
+                sb.AppendLine();
+                
                 // Add helper methods for users to serialize objects
-                sb.AppendLine($"    def to_dict(self) -> dict:");
-                sb.AppendLine($"        return dataclass.asdict(self)");
+                sb.AppendLine("    def to_dict(self) -> dict:");
+                sb.AppendLine("        return dataclass.asdict(self)");
 
                 var modelPath = Path.Combine(modelsDir, item.Name.ToSnakeCase() + ".py");
                 await File.WriteAllTextAsync(modelPath, sb.ToString());
@@ -221,9 +227,14 @@ public static class PythonSdk
 
                     // Figure out the parameter list
                     var hasBody = (from p in endpoint.Parameters where p.Location == "body" select p).Any();
-                    var paramListStr = string.Join(", ", from p in endpoint.Parameters select $"{p.Name}: {FixupType(api, p.DataType, p.IsArray, isParamHint: true)}");
-                    var bodyJson = string.Join(", ", from p in endpoint.Parameters where p.Location == "query" select $"\"{p.Name}\": {p.Name}");
-                    var fileUploadParam = (from p in endpoint.Parameters where p.Location == "form" select p).FirstOrDefault();
+                    var paramListStr = string.Join(", ",
+                        from p in endpoint.Parameters
+                        select
+                            $"{GetParamName(p.Name, endpoint.Path)}: {FixupType(api, p.DataType, p.IsArray, isParamHint: true)}");
+                    var bodyJson = string.Join(", ",
+                        from p in endpoint.Parameters where p.Location == "query" select $"\"{p.Name}\": {GetParamName(p.Name, endpoint.Path)}");
+                    var fileUploadParam = (from p in endpoint.Parameters where p.Location == "form" select p)
+                        .FirstOrDefault();
 
                     // Write the method
                     sb.AppendLine($"    def {endpoint.Name.ToSnakeCase()}(self, {paramListStr}) -> {returnDataType}:");
@@ -300,6 +311,20 @@ public static class PythonSdk
 
         imports.Sort();
         return imports.Distinct().ToList();
+    }
+
+    private static string GetParamName(string name, string endpointPath)
+    {
+        if (!string.Equals("from", name, StringComparison.OrdinalIgnoreCase))
+        {
+            return name;
+        }
+
+        return endpointPath switch
+        {
+            "/api/v1/useraccounts/magic-links/summary" => $"{name}_date",
+            _ => $"{name}_param"
+        };
     }
 
     private static void AddImport(ProjectSchema project, ApiSchema api, List<string> imports, string dataType)
