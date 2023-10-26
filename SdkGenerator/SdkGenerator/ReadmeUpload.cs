@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -110,7 +110,7 @@ public static class ReadmeUpload
 
         // Link all the API endpoints that work with this model
         var methods = new List<string>();
-        foreach (var endpoint in api.Endpoints)
+        foreach (var endpoint in api.Endpoints.Where(e => e.ReturnDataType != null))
         {
             var endpointDataType = endpoint.ReturnDataType.DataType.Replace("FetchResult", "");
             if (endpointDataType == item.Name)

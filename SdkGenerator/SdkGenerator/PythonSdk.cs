@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -201,7 +201,7 @@ public static class PythonSdk
             // Run through all APIs
             foreach (var endpoint in api.Endpoints)
             {
-                if (endpoint.Category == cat && !endpoint.Deprecated)
+                if (endpoint.Category == cat && !endpoint.Deprecated && endpoint.ReturnDataType != null)
                 {
                     sb.AppendLine();
 
@@ -276,7 +276,7 @@ public static class PythonSdk
         var imports = new List<string>();
         foreach (var endpoint in api.Endpoints)
         {
-            if (endpoint.Category == cat && !endpoint.Deprecated)
+            if (endpoint.Category == cat && !endpoint.Deprecated && endpoint.ReturnDataType != null)
             {
                 foreach (var p in endpoint.Parameters)
                 {

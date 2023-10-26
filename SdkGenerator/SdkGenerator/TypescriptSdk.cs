@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -167,7 +167,7 @@ public static class TypescriptSdk
             // Run through all APIs
             foreach (var endpoint in api.Endpoints)
             {
-                if (endpoint.Category == cat && !endpoint.Deprecated)
+                if (endpoint.Category == cat && !endpoint.Deprecated && endpoint.ReturnDataType != null)
                 {
                     sb.AppendLine();
                     sb.Append(endpoint.DescriptionMarkdown.ToJavaDoc(2, null, endpoint.Parameters));
@@ -253,7 +253,7 @@ public static class TypescriptSdk
         var types = new List<string>();
         foreach (var endpoint in api.Endpoints)
         {
-            if (endpoint.Category == category && !endpoint.Deprecated)
+            if (endpoint.Category == category && !endpoint.Deprecated && endpoint.ReturnDataType != null)
             {
                 AddImport(api, endpoint.ReturnDataType.DataType, types);
                 foreach (var p in endpoint.Parameters)
